@@ -1,7 +1,10 @@
 package Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.awt.Point;
 
 public class GridTest {
@@ -9,6 +12,23 @@ public class GridTest {
                                 {'0', '0', '0', '0'},
                                 {'0', '0', '0', '0'},
                                 {'0', '0', '0', '0'}};
+
+    public static char[][] generateBombs(char[][] answerGrid, int bombs) {
+        Random rand = new Random();
+        Set<Integer> seenBefore = new HashSet<>();
+        int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
+
+        //randomly place bombs
+        while (seenBefore.size() < bombs) {
+            int i = rand.nextInt(totalCells);
+            int row = i / answerGrid.length;
+            int column = i % answerGrid.length;
+            seenBefore.add(i);
+            answerGrid[row][column] = '*';
+        }
+
+        return answerGrid;
+    }
     
     public static List<Point> getNeighbors(int i, int j, char[][] answerGrid) {
         List<Point> neighbors = new ArrayList<Point>();
@@ -38,12 +58,50 @@ public class GridTest {
         return validNeighbors;
     }
 
+    public static char[][] fillMinecount(char[][] answerGrid) {
+        for (int i = 0; i < answerGrid.length; i ++) {
+            for (int j = 0; j < answerGrid.length; j++) {
+                if (answerGrid[i][j] == '*') {
+                    continue;
+                }
+                List<Point> neighbors = getNeighbors(i, j, answerGrid);
+                int minecount = 0;
+
+                for (Point n : neighbors) {
+                    if (answerGrid[(int)n.getX()][(int)n.getY()] == '*') {
+                        minecount++;
+                    }
+                }
+                answerGrid[i][j] = (char)(minecount + '0');
+            }
+        }
+        return answerGrid;
+    }
+
+    public static void printGrid(char[][] grid) {
+        for (int i = 0; i < grid.length; i ++) {
+            for (int j = 0; j < grid.length; j++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.print("\n");
+        }
+    }
+
     public static void main(String[] args) {
-        for (Point p : getNeighbors(3, 3, testGrid)) {
+        /*for (Point p : getNeighbors(0, 2, testGrid)) {
             System.out.print((int)p.getX() + ", ");
             System.out.print((int)p.getY());
             System.out.print("\n");
-        }
+        }*/
+        System.out.println("mines:");
+        char[][] bombGrid = {{'0', '*', '0', '0'},
+                             {'0', '0', '0', '0'},
+                             {'*', '0', '0', '0'},
+                             {'0', '*', '0', '*'}};
+        printGrid(bombGrid);
+        System.out.println("minecounts:");
+        char[][] countGrid = fillMinecount(bombGrid);
+        printGrid(countGrid);
     }
     
 }

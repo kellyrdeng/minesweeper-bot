@@ -84,15 +84,18 @@ public class Grid {
     public char[][] fillMinecount(char[][] answerGrid) {
         for (int i = 0; i < answerGrid.length; i ++) {
             for (int j = 0; j < answerGrid.length; j++) {
+                if (answerGrid[i][j] == '*') {
+                    continue;
+                }
                 List<Point> neighbors = getNeighbors(i, j, answerGrid);
                 int minecount = 0;
 
                 for (Point n : neighbors) {
-                    if (answerGrid[(int)n.getX()][(int)n.getY()] == 'x') {
+                    if (answerGrid[(int)n.getX()][(int)n.getY()] == '*') {
                         minecount++;
                     }
                 }
-                answerGrid[i][j] = (char)minecount;
+                answerGrid[i][j] = (char)(minecount + '0');
             }
         }
         return answerGrid;
@@ -128,11 +131,10 @@ public class Grid {
 
     public static void main(String[] args) {
         Grid test = new Grid("beginner");
-        /*System.out.println("Answer Grid:");
+        System.out.println("Answer Grid:");
         test.printGrid(test.getAnswerGrid());
         System.out.print("\n");
         System.out.println("User Grid:");
-        test.printGrid(test.getUserGrid());*/
-        test.getNeighbors(4, 4, null);
+        test.printGrid(test.getUserGrid());
     }
 }
