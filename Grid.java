@@ -100,16 +100,39 @@ public class Grid {
 
     public List<Point> getNeighbors(int i, int j, char[][] answerGrid) {
         List<Point> neighbors = new ArrayList<Point>();
+        //add the points which are immediate neighbors to (i,j):
+        //(i-1, j-1), (i-1, j), (i-1, j+1),
+        //(i, j-1), ===, (i, j+1),
+        //(i+1, j-1), (i+1, j), (i+1, j+1)
 
-        return neighbors;
+        for (int k = i - 1; k < i + 2; k++) {
+            for (int m = j - 1; m < j + 2; m++) {
+                if (k == i && m == j) {
+                    continue;
+                }
+                neighbors.add(new Point(k, m));
+            }
+        }
+
+        List<Point> validNeighbors = new ArrayList<Point>();
+        //remove indexes outside of grid and store in validNeighbors
+        for (Point p : neighbors) {
+
+            if (p.getX() >= 0 && p.getY() >= 0 && p.getX() < answerGrid.length && p.getY() < answerGrid.length) {
+                validNeighbors.add(p);
+            }
+        }
+        
+        return validNeighbors;
     }
 
     public static void main(String[] args) {
         Grid test = new Grid("beginner");
-        System.out.println("Answer Grid:");
+        /*System.out.println("Answer Grid:");
         test.printGrid(test.getAnswerGrid());
         System.out.print("\n");
         System.out.println("User Grid:");
-        test.printGrid(test.getUserGrid());
+        test.printGrid(test.getUserGrid());*/
+        test.getNeighbors(4, 4, null);
     }
 }
