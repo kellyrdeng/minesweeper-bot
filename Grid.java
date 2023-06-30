@@ -1,8 +1,14 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.awt.Point;
 
+//this class generates a minesweeper grid based on difficulty
+//it creates an answer grid with the mines and minecount for each cell
+//it also creates a blank user grid for the user to interact with and reveal cells from the answer board
 public class Grid {
     private char[][] answerGrid;
     private char[][] userGrid;
@@ -14,12 +20,15 @@ public class Grid {
             case "beginner":
                 size = 9;
                 bombs = 10;
+                break;
             case "intermediate":
                 size = 16;
                 bombs = 40;
+                break;
             case "expert":
                 size = 24;
                 bombs = 99;
+                break;
             default:
                 size = 9;
                 bombs = 10;
@@ -33,6 +42,7 @@ public class Grid {
         }
 
         this.answerGrid = generateBombs(answerGrid, bombs);
+        this.answerGrid = fillMinecount(answerGrid);
     }
 
     public char[][] getAnswerGrid() {
@@ -64,10 +74,34 @@ public class Grid {
             int row = i / answerGrid.length;
             int column = i % answerGrid.length;
             seenBefore.add(i);
-            answerGrid[row][column] = 'x';
+            answerGrid[row][column] = '*';
         }
 
         return answerGrid;
+    }
+
+    //use bomb placement to fill answer grid cells with the number of bombs they are adjacent to
+    public char[][] fillMinecount(char[][] answerGrid) {
+        for (int i = 0; i < answerGrid.length; i ++) {
+            for (int j = 0; j < answerGrid.length; j++) {
+                List<Point> neighbors = getNeighbors(i, j, answerGrid);
+                int minecount = 0;
+
+                for (Point n : neighbors) {
+                    if (answerGrid[(int)n.getX()][(int)n.getY()] == 'x') {
+                        minecount++;
+                    }
+                }
+                answerGrid[i][j] = (char)minecount;
+            }
+        }
+        return answerGrid;
+    }
+
+    public List<Point> getNeighbors(int i, int j, char[][] answerGrid) {
+        List<Point> neighbors = new ArrayList<Point>();
+
+        return neighbors;
     }
 
     public static void main(String[] args) {
