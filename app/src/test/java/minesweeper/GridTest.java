@@ -1,4 +1,4 @@
-package Test;
+package minesweeper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
