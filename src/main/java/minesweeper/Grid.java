@@ -55,6 +55,10 @@ public class Grid {
         return this.userGrid;
     }
 
+    public void setUserGridCell(int row, int column, char value) {
+        this.userGrid[row][column] = value;
+    }
+
     //prints out grid along with row/column indexes for easier cell identification
     public void printGrid(char[][] grid) {
         System.out.print("   ");
