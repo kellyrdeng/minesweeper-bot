@@ -7,9 +7,12 @@ public class App {
     public static void main(String[] args) {
         Grid test = new Grid("beginner");
         System.out.println("Answer Grid:");
+        System.out.print("\n");
         test.printGrid(test.getAnswerGrid());
         System.out.print("\n");
+        
         System.out.println("User Grid:");
+        System.out.print("\n");
         test.printGrid(test.getUserGrid());
     }
 }
