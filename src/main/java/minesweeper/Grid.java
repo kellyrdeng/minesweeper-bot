@@ -14,6 +14,9 @@ import java.awt.Point;
 public class Grid {
     static final int MINE = -1;
     static final int FLAG = -2;
+    static final int[][] offset = {{-1, -1}, {-1, 0}, {-1, 1},
+                                   {0, -1},           {0, 1},
+                                   {1, -1},  {1, 0},  {1, 1}};
     private int[][] answerGrid;
     private int[][] userGrid;
 
@@ -111,47 +114,23 @@ public class Grid {
                 if (answerGrid[i][j] == -1) {
                     continue;
                 }
-                List<Point> neighbors = getNeighbors(i, j, answerGrid);
-                int minecount = 0;
-
-                for (Point n : neighbors) {
-                    if (answerGrid[(int)n.getX()][(int)n.getY()] == -1) {
-                        minecount++;
-                    }
-                }
-                answerGrid[i][j] = minecount;
+                answerGrid[i][j] = countMines(i, j, answerGrid);
             }
         }
     }
 
-    //combine for loops
-    //make point class
-    //just increment grid cell when bomb found
-    public List<Point> getNeighbors(int i, int j, int[][] answerGrid) {
-        List<Point> neighbors = new ArrayList<Point>();
-        //add the points which are immediate neighbors to (i,j):
-        //(i-1, j-1), (i-1, j), (i-1, j+1),
-        //(i, j-1), ===, (i, j+1),
-        //(i+1, j-1), (i+1, j), (i+1, j+1)
+    //counts the number of immediate neighbors with mines for the point (i, j) using the offset const
+    public int countMines(int i, int j, int[][] answerGrid) {
+        int minecount = 0;
+        for (int[] point : offset) {
+            int row = i + point[0];
+            int column = j + point[1];
 
-        for (int m = i - 1; m <= i + 1; m++) {
-            for (int n = j - 1; n <= j + 1; n++) {
-                if (m == i && n == j) {
-                    continue;
-                }
-                neighbors.add(new Point(m, n));
+            if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
+                continue;
             }
+            minecount++;
         }
-
-        List<Point> validNeighbors = new ArrayList<Point>();
-        //remove indexes outside of grid and store in validNeighbors
-        for (Point p : neighbors) {
-
-            if (p.getX() >= 0 && p.getY() >= 0 && p.getX() < answerGrid.length && p.getY() < answerGrid.length) {
-                validNeighbors.add(p);
-            }
-        }
-        
-        return validNeighbors;
+        return minecount;
     }
 }
