@@ -12,8 +12,10 @@ import java.awt.Point;
 //it creates an answer grid with the mines and minecount for each cell
 //it also creates a blank user grid for the user to interact with and reveal cells from the answer board
 public class Grid {
-    private char[][] answerGrid;
-    private char[][] userGrid;
+    static final int MINE = -1;
+    static final int FLAG = -2;
+    private int[][] answerGrid;
+    private int[][] userGrid;
 
     public Grid(String difficulty) { //generates the answer and user grids cased on difficulty passed in
         int size;
@@ -36,49 +38,55 @@ public class Grid {
                 bombs = 10;
         }
 
-        this.answerGrid = new char[size][size];
-        this.userGrid = new char[size][size];
+        this.answerGrid = new int[size][size];
+        this.userGrid = new int[size][size];
         for (int i = 0; i < size; i++) {
             Arrays.fill(this.answerGrid[i], '0');
             Arrays.fill(this.userGrid[i], '0');
         }
 
-        this.answerGrid = generateBombs(answerGrid, bombs);
-        this.answerGrid = fillMinecount(answerGrid);
+        generateBombs(answerGrid, bombs);
+        fillMinecount(answerGrid);
     }
 
-    public char[][] getAnswerGrid() {
+    public int[][] getAnswerGrid() {
         return this.answerGrid;
     }
 
-    public char[][] getUserGrid() {
+    public int[][] getUserGrid() {
         return this.userGrid;
     }
 
-    public void setUserGridCell(int row, int column, char value) {
+    public void setUserGridCell(int row, int column, int value) {
         this.userGrid[row][column] = value;
     }
 
     //prints out grid along with row/column indexes for easier cell identification
-    public void printGrid(char[][] grid) {
+    public void printGrid(int[][] grid) {
         System.out.print("   ");
-        for (int i = 0; i < grid.length; i ++) {
+        for (int i = 0; i < grid.length; i++) {
             System.out.print(i + " ");
         }
         System.out.print("\n");
         System.out.print("\n");
         
-        for (int i = 0; i < grid.length; i ++) {
+        for (int i = 0; i < grid.length; i++) {
             System.out.print(i + "  ");
             for (int j = 0; j < grid.length; j++) {
-                System.out.print(grid[i][j] + " ");
+                if (grid[i][j] == MINE) {
+                    System.out.print("* ");
+                } else if (grid[i][j] == FLAG) {
+                    System.out.print("F ");
+                } else {
+                    System.out.print(grid[i][j] + " ");
+                }
             }
             System.out.print("\n");
         }
     }
 
     //use random number generator to select random indexes to place bombs
-    public char[][] generateBombs(char[][] answerGrid, int bombs) {
+    public void generateBombs(int[][] answerGrid, int bombs) {
         Random rand = new Random();
         Set<Integer> seenBefore = new HashSet<>();
         int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
@@ -86,49 +94,52 @@ public class Grid {
         //randomly place bombs
         while (seenBefore.size() < bombs) {
             int i = rand.nextInt(totalCells);
-            int row = i / answerGrid.length;
-            int column = i % answerGrid.length;
-            seenBefore.add(i);
-            answerGrid[row][column] = '*';
-        }
 
-        return answerGrid;
+            if (!seenBefore.contains(i)) { //if i hasn't been seen before, add to hashset and continue
+                seenBefore.add(i);
+                int row = i / answerGrid.length;
+                int column = i % answerGrid.length;
+                answerGrid[row][column] = -1;
+            }
+        }
     }
 
     //use bomb placement to fill answer grid cells with the number of bombs they are adjacent to
-    public char[][] fillMinecount(char[][] answerGrid) {
+    public void fillMinecount(int[][] answerGrid) {
         for (int i = 0; i < answerGrid.length; i ++) {
             for (int j = 0; j < answerGrid.length; j++) {
-                if (answerGrid[i][j] == '*') {
+                if (answerGrid[i][j] == -1) {
                     continue;
                 }
                 List<Point> neighbors = getNeighbors(i, j, answerGrid);
                 int minecount = 0;
 
                 for (Point n : neighbors) {
-                    if (answerGrid[(int)n.getX()][(int)n.getY()] == '*') {
+                    if (answerGrid[(int)n.getX()][(int)n.getY()] == -1) {
                         minecount++;
                     }
                 }
-                answerGrid[i][j] = (char)(minecount + '0');
+                answerGrid[i][j] = minecount;
             }
         }
-        return answerGrid;
     }
 
-    public List<Point> getNeighbors(int i, int j, char[][] answerGrid) {
+    //combine for loops
+    //make point class
+    //just increment grid cell when bomb found
+    public List<Point> getNeighbors(int i, int j, int[][] answerGrid) {
         List<Point> neighbors = new ArrayList<Point>();
         //add the points which are immediate neighbors to (i,j):
         //(i-1, j-1), (i-1, j), (i-1, j+1),
         //(i, j-1), ===, (i, j+1),
         //(i+1, j-1), (i+1, j), (i+1, j+1)
 
-        for (int k = i - 1; k < i + 2; k++) {
-            for (int m = j - 1; m < j + 2; m++) {
-                if (k == i && m == j) {
+        for (int m = i - 1; m <= i + 1; m++) {
+            for (int n = j - 1; n <= j + 1; n++) {
+                if (m == i && n == j) {
                     continue;
                 }
-                neighbors.add(new Point(k, m));
+                neighbors.add(new Point(m, n));
             }
         }
 

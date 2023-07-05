@@ -8,9 +8,9 @@ public class Game {
     }
 
     //return 0 on success, -1 if mine hit
-    public int Click(int row, int column) {
-        char cellValue = grid.getAnswerGrid()[row][column];
-        if (cellValue == '*') {
+    public int click(int row, int column) {
+        int cellValue = grid.getAnswerGrid()[row][column];
+        if (cellValue == -1) {
             return -1;
         } else if (cellValue == 0) {
             //bfs to reveal all neighboring 0 cells
