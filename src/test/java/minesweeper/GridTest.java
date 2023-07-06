@@ -179,19 +179,28 @@ public class GridTest {
     @Test
     public void testFillMinecount() {
         Grid beginner = new Grid("beginner");
-        int[][] answerGrid =  {{0, 0, 0},   //{1, 2, 1},
-                               {-1, 0, -1},  //{-1, 3, -1},
-                               {0, 0, -1}}; //{1, 3, -1}
+        int[][] answerGrid =  {{0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-        beginner.fillMinecount(answerGrid);
+        for (int m = 0; m < 100; m++) {
+            beginner.generateBombs(answerGrid, 10);
+            beginner.fillMinecount(answerGrid);
 
-        for (int i = 0; i < answerGrid.length; i++) {
-            for (int j = 0; j < answerGrid.length; j++) {
-                int cellValue = answerGrid[i][j];
-                if (cellValue == -1) { //MINE
-                    continue;
+            for (int i = 0; i < answerGrid.length; i++) {
+                for (int j = 0; j < answerGrid.length; j++) {
+                    int cellValue = answerGrid[i][j];
+                    if (cellValue == -1) { //MINE
+                        continue;
+                    }
+                    assertEquals(cellValue, beginner.countMines(i, j, answerGrid));
                 }
-                assertEquals(cellValue, beginner.countMines(i, j, answerGrid));
             }
         }
     }
