@@ -65,8 +65,12 @@ public class Grid {
         this.userGrid[row][column] = value;
     }
 
-    public void setUserGrid(int[][] newUserGrid) {
-        this.userGrid = newUserGrid;
+    public void setAnswerGrid(int[][] answerGrid) {
+        this.answerGrid = answerGrid;
+    }
+
+    public void setUserGrid(int[][] userGrid) {
+        this.userGrid = userGrid;
     }
 
     //prints out grid along with row/column indexes for easier cell identification

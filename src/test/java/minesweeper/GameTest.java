@@ -9,7 +9,7 @@ public class GameTest {
                                  { 2, 3, 2, 1},
                                  { 1,-1,-1, 1}};
     
-    /*@Test
+    @Test
     public void testClickNumber() {
         Game game = new Game("beginner");
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -81,5 +81,5 @@ public class GameTest {
     @Test //all mines found
     public void testCompleteGame() {
         
-    }*/
+    }
 }
