@@ -44,8 +44,8 @@ public class Grid {
         this.answerGrid = new int[size][size];
         this.userGrid = new int[size][size];
         for (int i = 0; i < size; i++) {
-            Arrays.fill(this.answerGrid[i], '0');
-            Arrays.fill(this.userGrid[i], '0');
+            Arrays.fill(this.answerGrid[i], 0);
+            Arrays.fill(this.userGrid[i], 0);
         }
 
         generateBombs(answerGrid, bombs);
@@ -89,10 +89,14 @@ public class Grid {
     }
 
     //use random number generator to select random indexes to place bombs
-    public void generateBombs(int[][] answerGrid, int bombs) {
+    public void generateBombs(int[][] answerGrid, int bombs) throws RuntimeException {
+        int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
+        if (bombs > totalCells) {
+            throw new RuntimeException("Number of mines exceeds number of cells");
+        }
+
         Random rand = new Random();
         Set<Integer> seenBefore = new HashSet<>();
-        int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
 
         //randomly place bombs
         while (seenBefore.size() < bombs) {
