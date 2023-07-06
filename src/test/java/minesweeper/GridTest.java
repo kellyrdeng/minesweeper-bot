@@ -163,4 +163,36 @@ public class GridTest {
         Exception e = assertThrows(beginner.generateBombs(answerGrid, 10));
         assertEquals(e.getMessage(), "Number of mines exceeds number of cells");
     }*/
+
+    @Test
+    public void testCountMines() {
+        Grid beginner = new Grid("beginner");
+        int[][] answerGrid =  {{0, 0, 0},
+                               {0, 0, 0},
+                               {0, 0, 1}};
+        
+        assertEquals(0, beginner.countMines(0, 0, answerGrid));
+        assertEquals(1, beginner.countMines(1, 1, answerGrid));
+        assertEquals(0, beginner.countMines(2, 2, answerGrid));
+    }
+
+    @Test
+    public void testFillMinecount() {
+        Grid beginner = new Grid("beginner");
+        int[][] answerGrid =  {{0, 0, 0},   //{1, 2, 1},
+                               {-1, 0, -1},  //{-1, 3, -1},
+                               {0, 0, -1}}; //{1, 3, -1}
+
+        beginner.fillMinecount(answerGrid);
+
+        for (int i = 0; i < answerGrid.length; i++) {
+            for (int j = 0; j < answerGrid.length; j++) {
+                int cellValue = answerGrid[i][j];
+                if (cellValue == -1) { //MINE
+                    continue;
+                }
+                assertEquals(cellValue, beginner.countMines(i, j, answerGrid));
+            }
+        }
+    }
 }

@@ -14,7 +14,7 @@ import java.awt.Point;
 public class Grid {
     static final int MINE = -1;
     static final int FLAG = -2;
-    static final int[][] offset = {{-1, -1}, {-1, 0}, {-1, 1},
+    static final int[][] OFFSET = {{-1, -1}, {-1, 0}, {-1, 1},
                                    {0, -1},           {0, 1},
                                    {1, -1},  {1, 0},  {1, 1}};
     private int[][] answerGrid;
@@ -126,15 +126,30 @@ public class Grid {
     //counts the number of immediate neighbors with mines for the point (i, j) using the offset const
     public int countMines(int i, int j, int[][] answerGrid) {
         int minecount = 0;
-        for (int[] point : offset) {
+
+        for (int[] point : OFFSET) {
             int row = i + point[0];
             int column = j + point[1];
 
             if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
                 continue;
             }
-            minecount++;
+
+            if (answerGrid[row][column] == MINE) {
+                minecount++;
+            }
         }
         return minecount;
+    }
+
+    public static void main(String[] args) {
+        Grid beginner = new Grid("beginner");
+        int[][] answerGrid =  {{0, 0, 0},
+                               {0, 0, 0},
+                               {0, 0, 1}};
+        System.out.println(beginner.countMines(5, 5, answerGrid));
+        //not sure whats wrong here but every time i call countMines in main or in a test
+        //the inputs automatically become 0 and 0 no matter what parameters i give it
+        //it works fine when fillMinecount() calls it though
     }
 }
