@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 public class GridTest {
     
-    @Test //test proper size, assert userGrid is all 0s
+    @Test //test proper size, assert userGrid is all BLANKs (-3)
     public void testCreateBeginnerGrid() {
         Grid beginner = new Grid("beginner");
         int[][] answerGrid = beginner.getAnswerGrid();
@@ -29,7 +29,7 @@ public class GridTest {
 
         for (int i = 0; i < userGrid.length; i++) {
             for (int j = 0; j < userGrid.length; j++) {
-                assertEquals(0, userGrid[i][j]);
+                assertEquals(-3, userGrid[i][j]);
             }
         }
     }
@@ -49,7 +49,7 @@ public class GridTest {
 
         for (int i = 0; i < userGrid.length; i++) {
             for (int j = 0; j < userGrid.length; j++) {
-                assertEquals(0, userGrid[i][j]);
+                assertEquals(-3, userGrid[i][j]);
             }
         }
     }
@@ -69,7 +69,7 @@ public class GridTest {
 
         for (int i = 0; i < userGrid.length; i++) {
             for (int j = 0; j < userGrid.length; j++) {
-                assertEquals(0, userGrid[i][j]);
+                assertEquals(-3, userGrid[i][j]);
             }
         }
     }

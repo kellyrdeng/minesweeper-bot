@@ -14,6 +14,7 @@ import java.awt.Point;
 public class Grid {
     static final int MINE = -1;
     static final int FLAG = -2;
+    static final int BLANK = -3;
     static final int[][] OFFSET = {{-1, -1}, {-1, 0}, {-1, 1},
                                    {0, -1},           {0, 1},
                                    {1, -1},  {1, 0},  {1, 1}};
@@ -45,7 +46,7 @@ public class Grid {
         this.userGrid = new int[size][size];
         for (int i = 0; i < size; i++) {
             Arrays.fill(this.answerGrid[i], 0);
-            Arrays.fill(this.userGrid[i], 0);
+            Arrays.fill(this.userGrid[i], -3);
         }
 
         generateBombs(answerGrid, bombs);
@@ -64,6 +65,10 @@ public class Grid {
         this.userGrid[row][column] = value;
     }
 
+    public void setUserGrid(int[][] newUserGrid) {
+        this.userGrid = newUserGrid;
+    }
+
     //prints out grid along with row/column indexes for easier cell identification
     public void printGrid(int[][] grid) {
         System.out.print("   ");
@@ -75,13 +80,16 @@ public class Grid {
         
         for (int i = 0; i < grid.length; i++) {
             System.out.print(i + "  ");
-            for (int j = 0; j < grid.length; j++) {
-                if (grid[i][j] == MINE) {
+            for (int j = 0; j < grid.length; j++) { //maybe swap this to a switch statement for readability
+                int cell = grid[i][j];
+                if (cell == MINE) {
                     System.out.print("* ");
-                } else if (grid[i][j] == FLAG) {
+                } else if (cell == FLAG) {
                     System.out.print("F ");
+                } else if (cell == BLANK) {
+                    System.out.print("- ");
                 } else {
-                    System.out.print(grid[i][j] + " ");
+                    System.out.print(cell + " ");
                 }
             }
             System.out.print("\n");
