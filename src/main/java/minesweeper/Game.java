@@ -44,12 +44,14 @@ public class Game {
                 grid.setUserGridCell(row, column, cellValue);
                 return 0;
         }
+
+        //add chording
     }
 
     //if a 0 is clicked, it reveals all adjacent 0s
     public void blankCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
-        HashSet<int[]> visited = new HashSet<int[]>();
+        HashSet<String> visited = new HashSet<String>();
         int[][] answerGrid = grid.getAnswerGrid();
 
         queue.add(new int[]{i, j});
@@ -58,7 +60,8 @@ public class Game {
             System.out.println(queue.size());
             //pop top cell and visit (check if 0 in answerGrid, if yes, reveal on userGrid), mark as visited
             int[] curCell = queue.poll();
-            visited.add(curCell);
+            String coordStr = curCell[0] + "," + curCell[1]; //unique key to store in HashSet
+            visited.add(coordStr);
 
             if (answerGrid[curCell[0]][curCell[1]] == 0) { //if 0, set userGrid and add neighbors
                 grid.setUserGridCell(curCell[0], curCell[1], 0);
@@ -73,7 +76,8 @@ public class Game {
                     }
 
                     int[] neighbor = new int[]{row, column};
-                    if (answerGrid[row][column] == 0 && !queue.contains(neighbor) && !visited.contains(neighbor)) {
+                    String neighborStr = row + "," + column;
+                    if (answerGrid[row][column] == 0 && !queue.contains(neighbor) && !visited.contains(neighborStr)) {
                         queue.add(neighbor);
                     }
                 }

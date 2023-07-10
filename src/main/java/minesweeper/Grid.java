@@ -100,6 +100,28 @@ public class Grid {
         }
     }
 
+    //determines if the contents of 2 grids are the same, used for testing
+    public boolean sameGrids(int[][] grid1, int[][] grid2) {
+        if (grid1.length != grid2.length) {
+            return false;
+        }
+        
+        for (int i = 0; i < grid1.length; i++) {
+            if (grid1[i].length != grid2[i].length) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < grid1.length; i++) {
+            for (int j = 0; j < grid1.length; j++) {
+                if (grid1[i][j] != grid2[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     //use random number generator to select random indexes to place bombs
     public void generateBombs(int[][] answerGrid, int bombs) throws RuntimeException {
         int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
