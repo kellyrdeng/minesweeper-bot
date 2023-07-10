@@ -8,10 +8,15 @@ public class GameTest {
                                  {-1, 1, 0, 0},
                                  { 2, 3, 2, 1},
                                  { 1,-1,-1, 1}};
+    static int[][] answerGrid2 = {{ 0, 0, 1,-1},
+                                  { 0, 0, 1, 1},
+                                  { 1, 1, 0, 0},
+                                  {-1, 1, 0, 0}};
     
     @Test
     public void testClickNumber() {
         Game game = new Game("beginner");
+        game.getGrid().setAnswerGrid(answerGrid);
         int[][] userGrid = {{-3, -3, -3, -3},
                             {-3, -3, -3, -3},
                             {-3, -3, -3, -3},
@@ -38,6 +43,7 @@ public class GameTest {
     @Test
     public void testClickZero() {
         Game game = new Game("beginner");
+        game.getGrid().setAnswerGrid(answerGrid);
         int[][] userGrid = {{-3, -3, -3, -3},
                             {-3, -3, -3, -3},
                             {-3, -3, -3, -3},
@@ -64,6 +70,33 @@ public class GameTest {
                                  {-3, -3,  0,  0},
                                  {-3, -3, -3, -3},
                                  {-3, -3, -3, -3}};
+        assertEquals(0, c2);
+        assertEquals(expectedGrid2, userGrid);
+    }
+
+    @Test
+    public void testClickZeroTwoZones() {
+        Game game = new Game("beginner");
+        game.getGrid().setAnswerGrid(answerGrid2);
+        int[][] userGrid = {{-3, -3, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3}};
+        game.getGrid().setUserGrid(userGrid);
+
+        int c1 = game.click(0, 3);
+        int[][] expectedGrid1 = {{-3, -3,  0,  0},
+                                 {-3, -3,  0,  0},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3}};
+        assertEquals(0, c1);
+        assertEquals(expectedGrid1, userGrid);
+
+        int c2 = game.click(0, 3);
+        int[][] expectedGrid2 = {{-3, -3,  0,  0},
+                                 {-3, -3,  0,  0},
+                                 { 0,  0, -3, -3},
+                                 { 0,  0, -3, -3}};
         assertEquals(0, c2);
         assertEquals(expectedGrid2, userGrid);
     }

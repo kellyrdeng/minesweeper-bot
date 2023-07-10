@@ -2,6 +2,7 @@ package minesweeper;
 
 import java.util.List;
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -48,7 +49,7 @@ public class Game {
     //if a 0 is clicked, it reveals all adjacent 0s
     public void blankCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
-        List<int[]> visited = new LinkedList<int[]>();
+        HashSet<int[]> visited = new HashSet<int[]>();
         int[][] answerGrid = grid.getAnswerGrid();
 
         queue.add(new int[]{i, j});
@@ -56,11 +57,11 @@ public class Game {
         while (queue.size() > 0) {
             System.out.println(queue.size());
             //pop top cell and visit (check if 0 in answerGrid, if yes, reveal on userGrid), mark as visited
-            int[] cur = queue.poll();
-            visited.add(cur);
+            int[] curCell = queue.poll();
+            visited.add(curCell);
 
-            if (answerGrid[cur[0]][cur[1]] == 0) { //if 0, set userGrid and add neighbors
-                grid.setUserGridCell(cur[0], cur[1], 0);
+            if (answerGrid[curCell[0]][curCell[1]] == 0) { //if 0, set userGrid and add neighbors
+                grid.setUserGridCell(curCell[0], curCell[1], 0);
 
                 //for each 0, add its neighbors (if in bounds, not already in queue, and they haven't already been visited)
                 for (int[] point : OFFSET) {

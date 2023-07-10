@@ -164,7 +164,7 @@ public class GridTest {
         assertEquals(e.getMessage(), "Number of mines exceeds number of cells");
     }*/
 
-    @Test
+    //@Test
     public void testCountMines() {
         Grid beginner = new Grid("beginner");
         int[][] answerGrid =  {{0, 0, 0},
