@@ -108,7 +108,22 @@ public class GameTest {
 
     @Test
     public void testClickBomb() {
-        
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        grid.setAnswerGrid(answerGrid);
+        int[][] userGrid = {{-3, -3, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = game.click(1, 0);
+        int[][] expectedGrid1 = {{-3, -3, -3, -3},
+                                 {-1, -3, -3, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3}};
+        assertEquals(-1, c1);
+        assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
     @Test

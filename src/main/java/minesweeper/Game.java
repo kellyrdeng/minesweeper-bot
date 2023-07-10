@@ -41,11 +41,30 @@ public class Game {
                 return 0;
 
             default: //1, 2, 3...
-                grid.setUserGridCell(row, column, cellValue);
+                if (grid.getUserGrid()[row][column] == cellValue) { //already been clicked/revealed
+                    chord(row, column, cellValue);
+                } else {
+                    grid.setUserGridCell(row, column, cellValue);
+                }
                 return 0;
         }
+    }
 
-        //add chording
+    //when clicking a cell whose minecount has already been revealed, you can:
+    //a) reveal minecounts of neighboring cells if all neighboring mines have already been found
+    //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
+    public void chord(int row, int column, int minecount) {
+        int foundMines = grid.countMines(row, column, grid.getUserGrid());
+
+        if (minecount != foundMines) { //mines not all found so can't chord (do nothing)
+            return;
+        }
+        //mines all found, reveal all other cells
+        for (int[] neighbor : OFFSET) {
+            if (grid.getUserGrid()[neighbor[0]][neighbor[1]] == BLANK) {
+                
+            }
+        }
     }
 
     //if a 0 is clicked, it reveals all adjacent 0s
@@ -57,7 +76,6 @@ public class Game {
         queue.add(new int[]{i, j});
 
         while (queue.size() > 0) {
-            System.out.println(queue.size());
             //pop top cell and visit (check if 0 in answerGrid, if yes, reveal on userGrid), mark as visited
             int[] curCell = queue.poll();
             String coordStr = curCell[0] + "," + curCell[1]; //unique key to store in HashSet

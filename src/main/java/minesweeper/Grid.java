@@ -158,18 +158,18 @@ public class Grid {
     }
 
     //counts the number of immediate neighbors with mines for the point (i, j) using the offset const
-    public int countMines(int i, int j, int[][] answerGrid) {
+    public int countMines(int i, int j, int[][] grid) {
         int minecount = 0;
 
         for (int[] point : OFFSET) {
             int row = i + point[0];
             int column = j + point[1];
 
-            if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
+            if (row < 0 || column < 0 || row >= grid.length || column >= grid.length) { //neighbor is out of boundaries
                 continue;
             }
 
-            if (answerGrid[row][column] == MINE) {
+            if (grid[row][column] == MINE) {
                 minecount++;
             }
         }
