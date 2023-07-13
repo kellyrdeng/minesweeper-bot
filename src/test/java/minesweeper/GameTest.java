@@ -18,8 +18,12 @@ public class GameTest {
                                   { 0, 0, 0, 0},
                                   { 0, 0, 0, 0},
                                   { 0, 0, 0, 0}};
+    static int[][] answerGrid4 = {{ 0, 0, 1, 1},
+                                  { 1, 0, 0, 1},
+                                  { 1, 1, 0, 0},
+                                  { 1, 0, 0, 1}};
     
-    /*@Test
+    @Test
     public void testClickNumber() {
         Game game = new Game("beginner");
         Grid grid = game.getGrid();
@@ -83,7 +87,7 @@ public class GameTest {
     }
 
     @Test
-    public void testClickZeroTwoZones() {
+    public void testClickZeroTwoZonesSmall() {
         Game game = new Game("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid2);
@@ -96,19 +100,52 @@ public class GameTest {
         int c1 = game.click(0, 3);
         int[][] expectedGrid1 = {{-3, -3,  0,  0},
                                  {-3, -3,  0,  0},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
+                                 { 0,  0, -3, -3},
+                                 { 0,  0, -3, -3}};
+        assertEquals(0, c1);
+        assertTrue(grid.sameGrids(expectedGrid1, userGrid));
+    }
+
+    @Test
+    public void testClickZeroTwoZonesBig() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] bigAnswerGrid = {{-1,  2,  1,  0,  0,  0},
+                                 { 2, -1,  2,  1,  0,  0},
+                                 { 1,  2, -1,  2,  1,  0},
+                                 { 0,  1,  2, -1,  2,  1},
+                                 { 0,  0,  1,  2, -1,  2},
+                                 { 0,  0,  0,  1,  2, -1}};
+        grid.setAnswerGrid(bigAnswerGrid);
+
+        int[][] userGrid = {{-3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = game.click(0, 5);
+        int[][] expectedGrid1 = {{-3, -3, -3,  0,  0,  0},
+                                 {-3, -3, -3, -3,  0,  0},
+                                 {-3, -3, -3, -3, -3,  0},
+                                 {-3, -3, -3, -3, -3, -3},
+                                 {-3, -3, -3, -3, -3, -3},
+                                 {-3, -3, -3, -3, -3, -3}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = game.click(2, 0);
-        int[][] expectedGrid2 = {{-3, -3,  0,  0},
-                                 {-3, -3,  0,  0},
-                                 { 0,  0, -3, -3},
-                                 { 0,  0, -3, -3}};
+        int c2 = game.click(5, 0);
+        int[][] expectedGrid2 = {{-3, -3, -3,  0,  0,  0},
+                                 {-3, -3, -3, -3,  0,  0},
+                                 {-3, -3, -3, -3, -3,  0},
+                                 { 0, -3, -3, -3, -3, -3},
+                                 { 0,  0, -3, -3, -3, -3},
+                                 { 0,  0,  0, -3, -3, -3}};
         assertEquals(0, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
-    }*/
+    }
 
     @Test //click a blank that reveals a zero, perform bfs
     public void testClickAllZeros() {
@@ -134,23 +171,23 @@ public class GameTest {
     public void testWeirdShapedBFS() {
         Game game = new Game("beginner");
         Grid grid = game.getGrid();
-        grid.setAnswerGrid(answerGrid3);
+        grid.setAnswerGrid(answerGrid4);
         int[][] userGrid = {{-3, -3, -3, -3},
                             {-3, -3, -3, -3},
                             {-3, -3, -3, -3},
                             {-3, -3, -3, -3}};
         grid.setUserGrid(userGrid);
 
-        int c1 = game.click(0, 0);
-        int[][] expectedGrid1 = {{ 0,  0,  0,  0},
-                                 { 0,  0,  0,  0},
-                                 { 0,  0,  0,  0},
-                                 { 0,  0,  0,  0}};
+        int c1 = game.click(1, 1);
+        int[][] expectedGrid1 = {{ 0,  0, -3, -3},
+                                 {-3,  0,  0, -3},
+                                 {-3, -3,  0,  0},
+                                 {-3,  0,  0, -3}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
-    /*@Test
+    @Test
     public void testClickBomb() {
         Game game = new Game("beginner");
         Grid grid = game.getGrid();
@@ -172,11 +209,19 @@ public class GameTest {
 
     @Test
     public void testClickOutOfBounds() {
-        
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        grid.setAnswerGrid(answerGrid);
+        int c1 = game.click(100, 100);
+        int c2 = game.click(1, 1);
+        int c3 = game.click(-1, -1);
+        assertEquals(-2, c1);
+        assertEquals(0, c2);
+        assertEquals(-2, c3);
     }
 
     @Test //all mines found
     public void testCompleteGame() {
         
-    }*/
+    }
 }

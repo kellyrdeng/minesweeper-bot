@@ -23,8 +23,13 @@ public class Game {
         return this.grid;
     }
 
-    //return 0 on success, -1 if mine hit
+    //return 0 on success, -1 if mine hit, -2 if out of bounds
     public int click(int row, int column) {
+        //check if out of bounds
+        if (row < 0 || column < 0 || row >= grid.getAnswerGrid().length || column >= grid.getAnswerGrid().length) {
+            return -2;
+        }
+
         int cellValue = grid.getAnswerGrid()[row][column];
 
         switch (cellValue) {
@@ -73,6 +78,7 @@ public class Game {
     public void blankCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
         HashSet<String> visited = new HashSet<String>();
+        HashSet<String> revealMinecounts = new HashSet<String>();
         int[][] answerGrid = grid.getAnswerGrid();
 
         queue.add(new int[]{i, j});
@@ -97,12 +103,24 @@ public class Game {
 
                     int[] neighbor = new int[]{row, column};
                     String neighborStr = row + "," + column;
+
                     if (answerGrid[row][column] == 0 && !queue.contains(neighbor) && !visited.contains(neighborStr)) {
                         queue.add(neighbor);
+                    }
+
+                    if (answerGrid[row][column] == 0) {
+                        revealMinecounts.add(neighborStr);
                     }
                 }
             }
         }
+
+    }
+
+    //reveals minecounts of cells adjacent to 0s revealed by BFS
+    //determine which cells should be revealed (adjacent to a 0 and a non 0)
+    public void revealBFSMinecounts(HashSet<String> visited, Grid grid) {
+
     }
 
     public static void main(String[] args) {
