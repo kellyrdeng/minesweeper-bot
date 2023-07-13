@@ -56,18 +56,25 @@ public class Game {
     //when clicking a cell whose minecount has already been revealed, you can:
     //a) reveal minecounts of neighboring cells if all neighboring mines have already been found
     //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
-    public void chord(int row, int column, int minecount) {
-        int foundMines = grid.countMines(row, column, grid.getUserGrid());
+    public void chord(int i, int j, int minecount) {
         int[][] userGrid = grid.getUserGrid();
-        int[][] answerGrid = grid.getAnswerGrid();
+        int foundMines = grid.countMines(i, j, userGrid);
 
         if (foundMines != minecount) { //mines not all found so can't chord (do nothing)
             return;
         }
-        //mines all found, reveal all other cells
+
+        //mines all found, click all other neighbor cells (reveal nonzeros, do bfs for 0s)
         for (int[] neighbor : OFFSET) {
-            if (userGrid[neighbor[0]][neighbor[1]] == BLANK) {
-                userGrid[neighbor[0]][neighbor[1]] = answerGrid[neighbor[0]][neighbor[1]];
+            int row = i + neighbor[0];
+            int column = j + neighbor[1];
+
+            if (row < 0 || column < 0 || row >= userGrid.length || column >= userGrid.length) { //neighbor is out of boundaries
+                continue;
+            }
+
+            if (userGrid[row][column] == BLANK) {
+                click(row, column);
             }
         }
     }

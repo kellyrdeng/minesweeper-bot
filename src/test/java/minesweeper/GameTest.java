@@ -241,6 +241,56 @@ public class GameTest {
     }
 
     @Test
+    public void testChording() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] chordAnswerGrid = {{-1, 1, 1,-1},
+                                   { 1, 1, 1, 1},
+                                   { 0, 0, 0, 0},
+                                   { 0, 0, 0, 0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{-1,  1, -3, -3},
+                            { 1,  1, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = game.click(1, 1);
+        int[][] expectedGrid1 = {{-1, 1, 1,-3},
+                                 { 1, 1, 1, 1},
+                                 { 0, 0, 0, 0},
+                                 { 0, 0, 0, 0}};
+        assertEquals(0, c1);
+        assertTrue(grid.sameGrids(expectedGrid1, userGrid));
+    }
+
+    @Test
+    public void testUnsuccessfulChording() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] chordAnswerGrid = {{-1, 1, 1,-1},
+                                   { 1, 1, 1, 1},
+                                   { 0, 0, 0, 0},
+                                   { 0, 0, 0, 0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{-3, -3, -3, -3},
+                            {-3,  1, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = game.click(1, 1);
+        int[][] expectedGrid1 = {{-3, -3, -3, -3},
+                                 {-3,  1, -3, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3}};
+        assertEquals(0, c1);
+        assertTrue(grid.sameGrids(expectedGrid1, userGrid));
+    }
+
+    @Test
     public void testClickOutOfBounds() {
         Game game = new Game("beginner");
         Grid grid = game.getGrid();
