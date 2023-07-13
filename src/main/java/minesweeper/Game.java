@@ -1,9 +1,7 @@
 package minesweeper;
 
-import java.util.List;
 import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Queue;
 
 public class Game {
@@ -75,7 +73,7 @@ public class Game {
     }
 
     //if a 0 is clicked, it reveals all adjacent 0s
-    public void blankCellBFS(int i, int j, Grid grid) {
+    public HashSet<String> blankCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
         HashSet<String> visited = new HashSet<String>();
         HashSet<String> revealMinecounts = new HashSet<String>();
@@ -108,19 +106,26 @@ public class Game {
                         queue.add(neighbor);
                     }
 
-                    if (answerGrid[row][column] == 0) {
+                    if (answerGrid[row][column] != 0) {
                         revealMinecounts.add(neighborStr);
                     }
                 }
             }
         }
-
+        revealBFSMinecounts(revealMinecounts, grid.getUserGrid(), grid.getAnswerGrid());
+        return revealMinecounts;
     }
 
     //reveals minecounts of cells adjacent to 0s revealed by BFS
-    //determine which cells should be revealed (adjacent to a 0 and a non 0)
-    public void revealBFSMinecounts(HashSet<String> visited, Grid grid) {
-
+    //convert each string to a coord
+    //reveal it on user grid
+    public void revealBFSMinecounts(HashSet<String> visited, int[][] userGrid, int[][] answerGrid) {
+        for (String cell : visited) {
+            String[] coords = cell.split(",");
+            int row = Integer.valueOf(coords[0]);
+            int column = Integer.valueOf(coords[1]);
+            userGrid[row][column] = answerGrid[row][column];
+        }
     }
 
     public static void main(String[] args) {

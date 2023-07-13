@@ -1,12 +1,9 @@
 package minesweeper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.awt.Point;
 
 //this class generates a minesweeper grid based on difficulty
 //it creates an answer grid with the mines and minecount for each cell
