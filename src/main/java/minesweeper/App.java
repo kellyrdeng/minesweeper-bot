@@ -3,16 +3,15 @@
  */
 package minesweeper;
 
+import java.util.Scanner;
+
 public class App {
     public static void main(String[] args) {
-        Grid test = new Grid("beginner");
-        System.out.println("Answer Grid:");
-        System.out.print("\n");
-        test.printGrid(test.getAnswerGrid());
-        System.out.print("\n");
-        
-        System.out.println("User Grid:");
-        System.out.print("\n");
-        test.printGrid(test.getUserGrid());
+        Scanner scnr = new Scanner(System.in);
+        System.out.println("Type beginner, intermediate, or expert to select difficulty:");
+        String difficulty = scnr.nextLine();
+        scnr.close();
+
+        Game newGame = new Game(difficulty);
     }
 }

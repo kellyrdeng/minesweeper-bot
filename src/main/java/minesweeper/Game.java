@@ -6,6 +6,7 @@ import java.util.Queue;
 
 public class Game {
     private Grid grid;
+    private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags)
     static final int MINE = -1;
     static final int FLAG = -2;
     static final int BLANK = -3;
@@ -15,10 +16,31 @@ public class Game {
 
     public Game(String difficulty) {
         this.grid = new Grid(difficulty);
+        switch (difficulty) {
+            case "beginner":
+                blanks = 81;
+                break;
+            case "intermediate":
+                blanks = 256;
+                break;
+            case "expert":
+                blanks = 576;
+                break;
+            default:
+                blanks = 81;
+        }
     }
 
     public Grid getGrid() {
         return this.grid;
+    }
+
+    public int getBlanks() {
+        return this.blanks;
+    }
+
+    public void setBlanks(int blanks) {
+        this.blanks = blanks;
     }
 
     //return 0 on success, -1 if mine hit, -2 if out of bounds
@@ -48,6 +70,7 @@ public class Game {
                     chord(row, column, cellValue);
                 } else {
                     grid.setUserGridCell(row, column, cellValue);
+                    setBlanks(getBlanks() - 1); //decrement blanks
                 }
                 return 0;
         }
@@ -120,6 +143,7 @@ public class Game {
             }
         }
         revealBFSMinecounts(revealMinecounts, grid.getUserGrid(), grid.getAnswerGrid());
+        setBlanks(getBlanks() - visited.size() - revealMinecounts.size()); //decrement all the cells we revealed
         return revealMinecounts;
     }
 
@@ -133,24 +157,5 @@ public class Game {
             int column = Integer.valueOf(coords[1]);
             userGrid[row][column] = answerGrid[row][column];
         }
-    }
-
-    public static void main(String[] args) {
-        Game game = new Game("beginner");
-
-        int[][] answerGrid = {{ 1, 1, 0, 0},
-                              {-1, 1, 0, 0},
-                              { 2, 3, 2, 1},
-                              { 1,-1,-1, 1}};
-        game.getGrid().setAnswerGrid(answerGrid);
-
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
-        game.getGrid().setUserGrid(userGrid);
-
-        int c1 = game.click(0, 2);
-        game.getGrid().printGrid(userGrid);
     }
 }
