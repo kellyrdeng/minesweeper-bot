@@ -55,14 +55,16 @@ public class Game {
     //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
     public void chord(int row, int column, int minecount) {
         int foundMines = grid.countMines(row, column, grid.getUserGrid());
+        int[][] userGrid = grid.getUserGrid();
+        int[][] answerGrid = grid.getAnswerGrid();
 
-        if (minecount != foundMines) { //mines not all found so can't chord (do nothing)
+        if (foundMines != minecount) { //mines not all found so can't chord (do nothing)
             return;
         }
         //mines all found, reveal all other cells
         for (int[] neighbor : OFFSET) {
-            if (grid.getUserGrid()[neighbor[0]][neighbor[1]] == BLANK) {
-                
+            if (userGrid[neighbor[0]][neighbor[1]] == BLANK) {
+                userGrid[neighbor[0]][neighbor[1]] = answerGrid[neighbor[0]][neighbor[1]];
             }
         }
     }
@@ -86,8 +88,8 @@ public class Game {
 
                 //for each 0, add its neighbors (if in bounds, not already in queue, and they haven't already been visited)
                 for (int[] point : OFFSET) {
-                    int row = i + point[0];
-                    int column = j + point[1];
+                    int row = curCell[0] + point[0];
+                    int column = curCell[1] + point[1];
 
                     if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
                         continue;
