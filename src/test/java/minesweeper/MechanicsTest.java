@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 
-public class GameTest {
+public class MechanicsTest {
     static int[][] answerGrid = {{ 1, 1, 0, 0},
                                  {-1, 1, 0, 0},
                                  { 2, 3, 2, 1},
@@ -27,7 +27,7 @@ public class GameTest {
     
     @Test
     public void testClickNumber() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid);
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -55,7 +55,7 @@ public class GameTest {
 
     @Test
     public void testClickZero() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid);
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -90,7 +90,7 @@ public class GameTest {
 
     @Test
     public void testClickZeroTwoZonesSmall() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid2);
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -110,7 +110,7 @@ public class GameTest {
 
     @Test
     public void testClickZeroTwoZonesBig() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] bigAnswerGrid = {{-1,  2,  1,  0,  0,  0},
                                  { 2, -1,  2,  1,  0,  0},
@@ -151,7 +151,7 @@ public class GameTest {
 
     @Test //click a blank that reveals a zero, perform bfs
     public void testClickAllZeros() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid3);
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -171,7 +171,7 @@ public class GameTest {
 
     @Test
     public void testWeirdShapedBFS() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid4);
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -191,7 +191,7 @@ public class GameTest {
 
     @Test
     public void testBFSNonZeroNeighbors() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] bigAnswerGrid = {{-1,  2,  1,  0,  0,  0},
                                  { 2, -1,  2,  1,  0,  0},
@@ -222,7 +222,7 @@ public class GameTest {
 
     @Test
     public void testClickBomb() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid);
         int[][] userGrid = {{-3, -3, -3, -3},
@@ -242,7 +242,7 @@ public class GameTest {
 
     @Test
     public void testChording() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] chordAnswerGrid = {{-1, 1, 1,-1},
                                    { 1, 1, 1, 1},
@@ -267,7 +267,7 @@ public class GameTest {
 
     @Test
     public void testComplicatedChording() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] chordAnswerGrid = {{-1,  2, -1,  1},
                                    { 1,  2,  1,  1},
@@ -308,7 +308,7 @@ public class GameTest {
 
     @Test
     public void testUnsuccessfulChording() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] chordAnswerGrid = {{-1, 1, 1,-1},
                                    { 1, 1, 1, 1},
@@ -333,7 +333,7 @@ public class GameTest {
 
     @Test
     public void testClickOutOfBounds() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         grid.setAnswerGrid(answerGrid);
         int c1 = game.click(100, 100);
@@ -346,7 +346,7 @@ public class GameTest {
 
     @Test //regular click, just reveal the minecount of 1 cell
     public void testBlanks() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2, -1,  2,  1,  0,  0,  0,  0,  0},
@@ -378,7 +378,7 @@ public class GameTest {
 
     @Test //regular click, just reveal the minecount of 1 cell
     public void testBFSBlanks() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2, -1,  2,  1,  0,  0,  0,  0,  0},
@@ -418,7 +418,7 @@ public class GameTest {
 
     @Test //flagging doesn't affect number of blanks
     public void testFlaggingBlanks() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2, -1,  2,  1,  0,  0,  0,  0,  0},
@@ -450,7 +450,7 @@ public class GameTest {
 
     @Test
     public void testChordingBlanks() {
-        Game game = new Game("beginner");
+        Mechanics game = new Mechanics("beginner");
         Grid grid = game.getGrid();
         int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2, -1,  2,  1,  0,  0,  0,  0,  0},

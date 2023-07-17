@@ -12,6 +12,6 @@ public class App {
         String difficulty = scnr.nextLine();
         scnr.close();
 
-        Game newGame = new Game(difficulty);
+        Mechanics newGame = new Mechanics(difficulty);
     }
 }

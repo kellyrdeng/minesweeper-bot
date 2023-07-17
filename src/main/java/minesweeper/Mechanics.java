@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
 
-public class Game {
+public class Mechanics {
     private Grid grid;
     private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags), game ends when mines == blanks
     static final int MINE = -1;
@@ -14,7 +14,7 @@ public class Game {
                                    { 0, -1},          { 0, 1},
                                    { 1, -1}, { 1, 0}, { 1, 1}};
 
-    public Game(String difficulty) {
+    public Mechanics(String difficulty) {
         this.grid = new Grid(difficulty);
         switch (difficulty) {
             case "beginner":
