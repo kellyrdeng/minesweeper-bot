@@ -17,8 +17,10 @@ public class Grid {
                                    {1, -1},  {1, 0},  {1, 1}};
     private int[][] answerGrid;
     private int[][] userGrid;
+    private String difficulty;
 
     public Grid(String difficulty) { //generates the answer and user grids cased on difficulty passed in
+        this.difficulty = difficulty;
         int size;
         int bombs;
         switch (difficulty) {
@@ -57,7 +59,11 @@ public class Grid {
     public int[][] getUserGrid() {
         return this.userGrid;
     }
-
+    
+    public String getDifficulty() {
+        return this.difficulty;
+    }
+    
     public void setUserGridCell(int row, int column, int value) {
         this.userGrid[row][column] = value;
     }

@@ -11,7 +11,5 @@ public class App {
         System.out.println("Type beginner, intermediate, or expert to select difficulty:");
         String difficulty = scnr.nextLine();
         scnr.close();
-
-        Mechanics newGame = new Mechanics(difficulty);
     }
 }

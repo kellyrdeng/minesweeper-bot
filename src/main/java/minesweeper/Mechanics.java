@@ -14,8 +14,9 @@ public class Mechanics {
                                    { 0, -1},          { 0, 1},
                                    { 1, -1}, { 1, 0}, { 1, 1}};
 
-    public Mechanics(String difficulty) {
-        this.grid = new Grid(difficulty);
+    public Mechanics(Grid grid) {
+        this.grid = grid;
+        String difficulty = grid.getDifficulty();
         switch (difficulty) {
             case "beginner":
                 blanks = 81;
