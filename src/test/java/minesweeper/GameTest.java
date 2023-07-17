@@ -473,11 +473,12 @@ public class GameTest {
                             {-3, -3, -3, -3, -3, -3, -3, -3, -3},
                             {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
         grid.setUserGrid(userGrid);
+        game.setBlanks(78);
 
         game.click(0, 1);
-        assertEquals(81, game.getBlanks());
-        int[][] expectedGrid = {{-2,  2, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -2, -3, -3, -3, -3, -3, -3, -3},
+        assertEquals(75, game.getBlanks());
+        int[][] expectedGrid = {{-2,  2,  1, -3, -3, -3, -3, -3, -3},
+                                { 2, -2,  2, -3, -3, -3, -3, -3, -3},
                                 {-3, -3, -3, -3, -3, -3, -3, -3, -3},
                                 {-3, -3, -3, -3, -3, -3, -3, -3, -3},
                                 {-3, -3, -3, -3, -3, -3, -3, -3, -3},
@@ -485,8 +486,6 @@ public class GameTest {
                                 {-3, -3, -3, -3, -3, -3, -3, -3, -3},
                                 {-3, -3, -3, -3, -3, -3, -3, -3, -3},
                                 {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
-
-        game.flag(7, 6);
-        assertEquals(81, game.getBlanks());
+        assertTrue(grid.sameGrids(userGrid, expectedGrid));
     }
 }
