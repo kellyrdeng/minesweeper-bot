@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class Game {
     private Grid grid;
-    private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags)
+    private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags), game ends when mines == blanks
     static final int MINE = -1;
     static final int FLAG = -2;
     static final int BLANK = -3;
@@ -58,20 +58,45 @@ public class Game {
                 return -1;
 
             case 0:
-                blankCellBFS(row, column, grid);
+                zeroCellBFS(row, column, grid);
                 return 0;
 
             case FLAG:
                 grid.setUserGridCell(row, column, BLANK);
                 return 0;
 
-            default: //1, 2, 3...
+            default: //1, 2, 3... minecount
                 if (grid.getUserGrid()[row][column] == cellValue) { //already been clicked/revealed
                     chord(row, column, cellValue);
-                } else {
-                    grid.setUserGridCell(row, column, cellValue);
+                } else { 
+                    grid.setUserGridCell(row, column, cellValue); //reveal minecount
                     setBlanks(getBlanks() - 1); //decrement blanks
                 }
+                return 0;
+        }
+    }
+
+    //0 on success, -2 if out of bounds
+    public int flag(int row, int column) {
+        //check if out of bounds
+        if (row < 0 || column < 0 || row >= grid.getAnswerGrid().length || column >= grid.getAnswerGrid().length) {
+            return -2;
+        }
+
+        int cellValue = grid.getAnswerGrid()[row][column];
+
+        switch (cellValue) {
+            case FLAG:
+                grid.setUserGridCell(row, column, BLANK);
+                return 0;
+            
+            case MINE: //same as blank
+            
+            case BLANK:
+                grid.setUserGridCell(row, column, FLAG);
+                return 0;
+
+            default: //minecount already revealed
                 return 0;
         }
     }
@@ -81,7 +106,7 @@ public class Game {
     //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
     public void chord(int i, int j, int minecount) {
         int[][] userGrid = grid.getUserGrid();
-        int foundMines = grid.countMines(i, j, userGrid);
+        int foundMines = grid.countMinesOrFlags(i, j, userGrid, -2);
 
         if (foundMines != minecount) { //mines not all found so can't chord (do nothing)
             return;
@@ -103,7 +128,7 @@ public class Game {
     }
 
     //if a 0 is clicked, it reveals all adjacent 0s
-    public HashSet<String> blankCellBFS(int i, int j, Grid grid) {
+    public HashSet<String> zeroCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
         HashSet<String> visited = new HashSet<String>();
         HashSet<String> revealMinecounts = new HashSet<String>();
@@ -132,12 +157,14 @@ public class Game {
                     int[] neighbor = new int[]{row, column};
                     String neighborStr = row + "," + column;
 
+                    //is zero, hasn't been processed, not in the line to be processed
+                    //add to queue to be processed
                     if (answerGrid[row][column] == 0 && !queue.contains(neighbor) && !visited.contains(neighborStr)) {
                         queue.add(neighbor);
                     }
 
-                    if (answerGrid[row][column] != 0) {
-                        revealMinecounts.add(neighborStr);
+                    if (answerGrid[row][column] != 0) { //nonzero cells adjacent to zero cells
+                        revealMinecounts.add(neighborStr); //added to HashSet to be revealed later
                     }
                 }
             }

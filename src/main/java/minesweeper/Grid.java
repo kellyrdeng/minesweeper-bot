@@ -149,13 +149,14 @@ public class Grid {
                 if (answerGrid[i][j] == -1) {
                     continue;
                 }
-                answerGrid[i][j] = countMines(i, j, answerGrid);
+                answerGrid[i][j] = countMinesOrFlags(i, j, answerGrid, -1);
             }
         }
     }
 
-    //counts the number of immediate neighbors with mines for the point (i, j) using the offset const
-    public int countMines(int i, int j, int[][] grid) {
+    //counts the number of immediate neighbors with mines OR flags (depending on the toCount var passed in)
+    //for the point (i, j) using the offset const
+    public int countMinesOrFlags(int i, int j, int[][] grid, int toCount) {
         int minecount = 0;
 
         for (int[] point : OFFSET) {
@@ -166,7 +167,7 @@ public class Grid {
                 continue;
             }
 
-            if (grid[row][column] == MINE) {
+            if (grid[row][column] == toCount) {
                 minecount++;
             }
         }
@@ -178,8 +179,8 @@ public class Grid {
         int[][] answerGrid =  {{0, 0, 0},
                                {0, 0, 0},
                                {0, 0, 1}};
-        System.out.println(beginner.countMines(5, 5, answerGrid));
-        //not sure whats wrong here but every time i call countMines in main or in a test
+        System.out.println(beginner.countMinesOrFlags(5, 5, answerGrid, -1));
+        //not sure whats wrong here but every time i call countMinesOrFlags in main or in a test
         //the inputs automatically become 0 and 0 no matter what parameters i give it
         //it works fine when fillMinecount() calls it though
     }

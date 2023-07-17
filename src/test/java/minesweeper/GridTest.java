@@ -156,15 +156,15 @@ public class GridTest {
     }*/
 
     //@Test
-    public void testCountMines() {
+    public void testcountMinesOrFlags() {
         Grid beginner = new Grid("beginner");
         int[][] answerGrid =  {{0, 0, 0},
                                {0, 0, 0},
                                {0, 0, 1}};
         
-        assertEquals(0, beginner.countMines(0, 0, answerGrid));
-        assertEquals(1, beginner.countMines(1, 1, answerGrid));
-        assertEquals(0, beginner.countMines(2, 2, answerGrid));
+        assertEquals(0, beginner.countMinesOrFlags(0, 0, answerGrid, -1));
+        assertEquals(1, beginner.countMinesOrFlags(1, 1, answerGrid, -1));
+        assertEquals(0, beginner.countMinesOrFlags(2, 2, answerGrid, -1));
     }
 
     @Test
@@ -190,7 +190,7 @@ public class GridTest {
                     if (cellValue == -1) { //MINE
                         continue;
                     }
-                    assertEquals(cellValue, beginner.countMines(i, j, answerGrid));
+                    assertEquals(cellValue, beginner.countMinesOrFlags(i, j, answerGrid, -1));
                 }
             }
         }

@@ -209,7 +209,7 @@ public class GameTest {
                             {-3, -3, -3, -3, -3, -3}};
         grid.setUserGrid(userGrid);
 
-        HashSet<String> nonZeroNeighbors = game.blankCellBFS(0, 5, grid);
+        HashSet<String> nonZeroNeighbors = game.zeroCellBFS(0, 5, grid);
         assertTrue(nonZeroNeighbors.contains("0,2"));
         assertTrue(nonZeroNeighbors.contains("1,2"));
         assertTrue(nonZeroNeighbors.contains("1,3"));
@@ -250,19 +250,60 @@ public class GameTest {
                                    { 0, 0, 0, 0}};
         grid.setAnswerGrid(chordAnswerGrid);
 
-        int[][] userGrid = {{-1,  1, -3, -3},
+        int[][] userGrid = {{-2,  1, -3, -3},
                             { 1,  1, -3, -3},
                             {-3, -3, -3, -3},
                             {-3, -3, -3, -3}};
         grid.setUserGrid(userGrid);
 
         int c1 = game.click(1, 1);
-        int[][] expectedGrid1 = {{-1, 1, 1,-3},
+        int[][] expectedGrid1 = {{-2, 1, 1,-3},
                                  { 1, 1, 1, 1},
                                  { 0, 0, 0, 0},
                                  { 0, 0, 0, 0}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
+    }
+
+    @Test
+    public void testComplicatedChording() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] chordAnswerGrid = {{-1,  2, -1,  1},
+                                   { 1,  2,  1,  1},
+                                   { 0,  0,  0,  0},
+                                   { 0,  0,  0,  0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{-2,  2, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3},
+                            {-3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = game.click(0, 1); //nothing should happen
+        int[][] expectedGrid1 = {{-2,  2, -3, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3}};
+        assertEquals(0, c1);
+        assertTrue(grid.sameGrids(expectedGrid1, userGrid));
+
+        int c2 = game.flag(0, 2); 
+        int[][] expectedGrid2 = {{-2,  2, -2, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3}};
+        assertEquals(0, c2);
+        assertTrue(grid.sameGrids(expectedGrid2, userGrid));
+
+        int c3 = game.click(0, 1); 
+        int[][] expectedGrid3 = {{-2,  2, -2, -3},
+                                 { 1,  2,  1, -3},
+                                 {-3, -3, -3, -3},
+                                 {-3, -3, -3, -3}};
+        assertEquals(0, c3);
+        assertTrue(grid.sameGrids(expectedGrid3, userGrid));
     }
 
     @Test
@@ -303,8 +344,149 @@ public class GameTest {
         assertEquals(-2, c3);
     }
 
-    @Test //all mines found
-    public void testCompleteGame() {
-        
+    @Test //regular click, just reveal the minecount of 1 cell
+    public void testBlanks() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        grid.setAnswerGrid(fullAnswerGrid);
+
+        int[][] userGrid = {{-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        game.click(0, 2);
+        assertEquals(80, game.getBlanks());
+        game.click(7, 6);
+        assertEquals(79, game.getBlanks());
+    }
+
+    @Test //regular click, just reveal the minecount of 1 cell
+    public void testBFSBlanks() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        grid.setAnswerGrid(fullAnswerGrid);
+
+        int[][] userGrid = {{-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        game.click(0, 8);
+        assertEquals(47, game.getBlanks());
+        int[][] expectedGrid = {{-3, -3,  1,  0,  0,  0,  0,  0,  0},
+                                {-3, -3,  2,  1,  0,  0,  0,  0,  0},
+                                {-3, -3, -3,  2,  1,  0,  0,  0,  0},
+                                {-3, -3, -3, -3,  2,  1,  0,  0,  0},
+                                {-3, -3, -3, -3, -3,  2,  1,  0,  0},
+                                {-3, -3, -3, -3, -3, -3,  2,  1,  0},
+                                {-3, -3, -3, -3, -3, -3, -3,  2,  1},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        assertTrue(grid.sameGrids(expectedGrid, userGrid));
+    }
+
+    @Test //flagging doesn't affect number of blanks
+    public void testFlaggingBlanks() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        grid.setAnswerGrid(fullAnswerGrid);
+
+        int[][] userGrid = {{-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        game.flag(0, 2);
+        assertEquals(81, game.getBlanks());
+        game.flag(7, 6);
+        assertEquals(81, game.getBlanks());
+    }
+
+    @Test
+    public void testChordingBlanks() {
+        Game game = new Game("beginner");
+        Grid grid = game.getGrid();
+        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        grid.setAnswerGrid(fullAnswerGrid);
+
+        int[][] userGrid = {{-2,  2, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -2, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        grid.setUserGrid(userGrid);
+
+        game.click(0, 1);
+        assertEquals(81, game.getBlanks());
+        int[][] expectedGrid = {{-2,  2, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -2, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+
+        game.flag(7, 6);
+        assertEquals(81, game.getBlanks());
     }
 }
