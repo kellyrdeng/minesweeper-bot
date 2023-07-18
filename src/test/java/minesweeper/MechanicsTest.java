@@ -461,4 +461,24 @@ public class MechanicsTest {
                                 { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         assertTrue(grid.sameGrids(userGrid, expectedGrid));
     }
+
+    @Test
+    public void testIncorrectFlagChord() { //chording with an incorrectly placed flag should end the game
+        Grid grid = new Grid("beginner");
+        Mechanics mech = new Mechanics(grid);
+        int[][] chordAnswerGrid = {{ M, 1, 1, M},
+                                   { 1, 1, 1, 1},
+                                   { 0, 0, 0, 0},
+                                   { 0, 0, 0, 0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{ B,  F,  B,  B},
+                            { B,  1,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = mech.click(1, 1);
+        assertEquals(-1, c1);
+    }
 }

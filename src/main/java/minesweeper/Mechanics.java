@@ -44,12 +44,12 @@ public class Mechanics {
 
             default: //1, 2, 3... minecount
                 if (grid.getUserGrid()[row][column] == cellValue) { //already been clicked/revealed
-                    chord(row, column, cellValue);
+                    return chord(row, column, cellValue);
                 } else { 
                     grid.setUserGridCell(row, column, cellValue); //reveal minecount
                     grid.decrementBlanks();
+                    return 0;
                 }
-                return 0;
         }
     }
 
@@ -81,15 +81,17 @@ public class Mechanics {
     //when clicking a cell whose minecount has already been revealed, you can:
     //a) reveal minecounts of neighboring cells if all neighboring mines have already been found
     //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
-    public void chord(int i, int j, int minecount) {
-        int[][] userGrid = grid.getUserGrid();
-        int foundMines = grid.countMinesOrFlags(i, j, userGrid, -2);
 
-        if (foundMines != minecount) { //mines not all found so can't chord (do nothing)
-            return;
+    //return 0 on success, -1 if failed chord (incorrect flag) ends the game
+    public int chord(int i, int j, int minecount) {
+        int[][] userGrid = grid.getUserGrid();
+        int flags = grid.countMinesOrFlags(i, j, userGrid, FLAG);
+
+        if (flags != minecount) { //mines not all found so can't chord (do nothing)
+            return 0;
         }
 
-        //mines all found, click all other neighbor cells (reveal nonzeros, do bfs for 0s)
+        //mines all found, click all other neighbor cells (it will reveal nonzeros, do bfs for 0s)
         for (int[] neighbor : OFFSET) {
             int row = i + neighbor[0];
             int column = j + neighbor[1];
@@ -99,9 +101,13 @@ public class Mechanics {
             }
 
             if (userGrid[row][column] == BLANK) {
-                click(row, column);
+                int c = click(row, column);
+                if (c == -1) {
+                    return c;
+                }
             }
         }
+        return 0;
     }
 
     //if a 0 cell is clicked, it reveals adjacent 0s and then one more layer of cells adjacent to those 0s
@@ -138,17 +144,5 @@ public class Mechanics {
             }
         }
         grid.setBlanks(grid.getBlanks() - visited.size()); //decrement all the cells we revealed
-    }
-
-    //reveals minecounts of cells adjacent to 0s revealed by BFS
-    //convert each string to a coord
-    //reveal it on user grid
-    public void revealBFSMinecounts(HashSet<String> visited, int[][] userGrid, int[][] answerGrid) {
-        for (String cell : visited) {
-            String[] coords = cell.split(",");
-            int row = Integer.valueOf(coords[0]);
-            int column = Integer.valueOf(coords[1]);
-            userGrid[row][column] = answerGrid[row][column];
-        }
     }
 }
