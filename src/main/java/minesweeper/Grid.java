@@ -9,12 +9,12 @@ import java.util.Set;
 //it creates an answer grid with the mines and minecount for each cell
 //it also creates a blank user grid for the user to interact with and reveal cells from the answer board
 public class Grid {
-    static final int MINE = -1;
-    static final int FLAG = -2;
-    static final int BLANK = -3;
-    static final int[][] OFFSET = {{-1, -1}, {-1, 0}, {-1, 1},
-                                   {0, -1},           {0, 1},
-                                   {1, -1},  {1, 0},  {1, 1}};
+    public static final int MINE = -1;
+    public static final int FLAG = -2;
+    public static final int BLANK = -3;
+    public static final int[][] OFFSET = {{-1, -1}, {-1, 0}, {-1, 1},
+                                          {0, -1},           {0,  1},
+                                          {1, -1},  {1, 0},  {1,  1}};
     private int[][] answerGrid;
     private int[][] userGrid;
     private String difficulty;

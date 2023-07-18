@@ -4,15 +4,14 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
 
+import static minesweeper.Grid.MINE;
+import static minesweeper.Grid.FLAG;
+import static minesweeper.Grid.BLANK;
+import static minesweeper.Grid.OFFSET;
+
 public class Mechanics {
     private Grid grid;
     private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags), game ends when mines == blanks
-    static final int MINE = -1;
-    static final int FLAG = -2;
-    static final int BLANK = -3;
-    static final int[][] OFFSET = {{-1, -1}, {-1, 0}, {-1, 1},
-                                   { 0, -1},          { 0, 1},
-                                   { 1, -1}, { 1, 0}, { 1, 1}};
 
     public Mechanics(Grid grid) {
         this.grid = grid;
@@ -133,7 +132,6 @@ public class Mechanics {
         Queue<int[]> queue = new ArrayDeque<int[]>();
         HashSet<Integer> visited = new HashSet<Integer>();
         int[][] answerGrid = grid.getAnswerGrid();
-        int revealed = 0;
 
         queue.add(new int[]{i, j});
         visited.add(i * grid.getSize() + j); //unique key to store in HashSet
@@ -142,7 +140,6 @@ public class Mechanics {
             int[] popped = queue.poll();
             int minecount = answerGrid[popped[0]][popped[1]];
             grid.setUserGridCell(popped[0], popped[1], minecount); //reveal cell
-            revealed++;
 
             if (minecount == 0) { //if 0, add neighbors if in bounds and not already visited
                 for (int[] point : OFFSET) {
@@ -163,7 +160,7 @@ public class Mechanics {
                 }
             }
         }
-        setBlanks(getBlanks() - revealed); //decrement all the cells we revealed
+        setBlanks(getBlanks() - visited.size()); //decrement all the cells we revealed
     }
 
     //reveals minecounts of cells adjacent to 0s revealed by BFS
