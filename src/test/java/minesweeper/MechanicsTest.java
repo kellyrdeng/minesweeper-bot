@@ -209,15 +209,13 @@ public class MechanicsTest {
                             {-3, -3, -3, -3, -3, -3}};
         grid.setUserGrid(userGrid);
 
-        HashSet<String> nonZeroNeighbors = mech.zeroCellBFS(0, 5, grid);
-        assertTrue(nonZeroNeighbors.contains("0,2"));
-        assertTrue(nonZeroNeighbors.contains("1,2"));
-        assertTrue(nonZeroNeighbors.contains("1,3"));
-        assertTrue(nonZeroNeighbors.contains("2,3"));
-        assertTrue(nonZeroNeighbors.contains("2,4"));
-        assertTrue(nonZeroNeighbors.contains("3,4"));
-        assertTrue(nonZeroNeighbors.contains("3,5"));
-        assertEquals(nonZeroNeighbors.size(), 7);
+        mech.zeroCellBFS(0, 5, grid);
+        int[][] expectedGrid = {{-3, -3,  1,  0,  0,  0},
+                                {-3, -3,  2,  1,  0,  0},
+                                {-3, -3, -3,  2,  1,  0},
+                                {-3, -3, -3, -3,  2,  1},
+                                {-3, -3, -3, -3, -3, -3},
+                                {-3, -3, -3, -3, -3, -3}};
     }
 
     @Test

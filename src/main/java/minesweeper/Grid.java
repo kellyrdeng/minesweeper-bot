@@ -63,7 +63,11 @@ public class Grid {
     public String getDifficulty() {
         return this.difficulty;
     }
-    
+
+    public int getSize() {
+        return this.answerGrid.length;
+    }
+
     public void setUserGridCell(int row, int column, int value) {
         this.userGrid[row][column] = value;
     }

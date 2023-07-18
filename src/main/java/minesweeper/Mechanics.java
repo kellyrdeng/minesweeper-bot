@@ -128,51 +128,42 @@ public class Mechanics {
         }
     }
 
-    //if a 0 is clicked, it reveals all adjacent 0s
-    public HashSet<String> zeroCellBFS(int i, int j, Grid grid) {
+    //if a 0 cell is clicked, it reveals adjacent 0s and then one more layer of cells adjacent to those 0s
+    public void zeroCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
-        HashSet<String> visited = new HashSet<String>();
-        HashSet<String> revealMinecounts = new HashSet<String>();
+        HashSet<Integer> visited = new HashSet<Integer>();
         int[][] answerGrid = grid.getAnswerGrid();
+        int revealed = 0;
 
         queue.add(new int[]{i, j});
+        visited.add(i * grid.getSize() + j); //unique key to store in HashSet
 
         while (queue.size() > 0) {
-            //pop top cell and visit (check if 0 in answerGrid, if yes, reveal on userGrid), mark as visited
-            int[] curCell = queue.poll();
-            String coordStr = curCell[0] + "," + curCell[1]; //unique key to store in HashSet
-            visited.add(coordStr);
+            int[] popped = queue.poll();
+            int minecount = answerGrid[popped[0]][popped[1]];
+            grid.setUserGridCell(popped[0], popped[1], minecount); //reveal cell
+            revealed++;
 
-            if (answerGrid[curCell[0]][curCell[1]] == 0) { //if 0, set userGrid and add neighbors
-                grid.setUserGridCell(curCell[0], curCell[1], 0);
-
-                //for each 0, add its neighbors (if in bounds, not already in queue, and they haven't already been visited)
+            if (minecount == 0) { //if 0, add neighbors if in bounds and not already visited
                 for (int[] point : OFFSET) {
-                    int row = curCell[0] + point[0];
-                    int column = curCell[1] + point[1];
+                    int row = popped[0] + point[0];
+                    int column = popped[1] + point[1];
 
                     if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
                         continue;
                     }
 
                     int[] neighbor = new int[]{row, column};
-                    String neighborStr = row + "," + column;
+                    int neighborInt = neighbor[0] * grid.getSize() + neighbor[1];
 
-                    //is zero, hasn't been processed, not in the line to be processed
-                    //add to queue to be processed
-                    if (answerGrid[row][column] == 0 && !queue.contains(neighbor) && !visited.contains(neighborStr)) {
+                    if (!visited.contains(neighborInt)) { //add neighbor to queue if not yet visited
                         queue.add(neighbor);
-                    }
-
-                    if (answerGrid[row][column] != 0) { //nonzero cells adjacent to zero cells
-                        revealMinecounts.add(neighborStr); //added to HashSet to be revealed later
+                        visited.add(neighborInt);
                     }
                 }
             }
         }
-        revealBFSMinecounts(revealMinecounts, grid.getUserGrid(), grid.getAnswerGrid());
-        setBlanks(getBlanks() - visited.size() - revealMinecounts.size()); //decrement all the cells we revealed
-        return revealMinecounts;
+        setBlanks(getBlanks() - revealed); //decrement all the cells we revealed
     }
 
     //reveals minecounts of cells adjacent to 0s revealed by BFS
