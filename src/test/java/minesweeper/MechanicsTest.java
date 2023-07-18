@@ -8,9 +8,9 @@ import java.util.HashSet;
 import org.junit.jupiter.api.Test;
 
 public class MechanicsTest {
-    public static final int M = -1;
-    public static final int F = -2;
-    public static final int B = -3;
+    public static final int M = -1;  //MINE
+    public static final int F = -2;  //FLAG
+    public static final int B = -3;  //BLANK
 
     static int[][] answerGrid = {{ 1, 1, 0, 0},
                                  { M, 1, 0, 0},

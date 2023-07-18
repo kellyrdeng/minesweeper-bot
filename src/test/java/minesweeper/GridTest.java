@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class GridTest {
+    public static final int M =  -1;  //MINE
+    public static final int F =  -2;  //FLAG
+    public static final int B =  -3;  //BLANK
     
-    @Test //test proper size, assert userGrid is all BLANKs (-3)
+    @Test //test proper size, assert userGrid is all BLANKs
     public void testCreateBeginnerGrid() {
         Grid beginner = new Grid("beginner");
         int[][] answerGrid = beginner.getAnswerGrid();
@@ -20,7 +23,7 @@ public class GridTest {
 
         for (int i = 0; i < userGrid.length; i++) {
             for (int j = 0; j < userGrid.length; j++) {
-                assertEquals(-3, userGrid[i][j]);
+                assertEquals(B, userGrid[i][j]);
             }
         }
     }
@@ -40,7 +43,7 @@ public class GridTest {
 
         for (int i = 0; i < userGrid.length; i++) {
             for (int j = 0; j < userGrid.length; j++) {
-                assertEquals(-3, userGrid[i][j]);
+                assertEquals(B, userGrid[i][j]);
             }
         }
     }
@@ -60,7 +63,7 @@ public class GridTest {
 
         for (int i = 0; i < userGrid.length; i++) {
             for (int j = 0; j < userGrid.length; j++) {
-                assertEquals(-3, userGrid[i][j]);
+                assertEquals(B, userGrid[i][j]);
             }
         }
     }
@@ -73,7 +76,7 @@ public class GridTest {
         int bBombs = 0;
         for (int i = 0; i < beginnerAnsGrid.length; i++) {
             for (int j = 0; j < beginnerAnsGrid.length; j++) {
-                if (beginnerAnsGrid[i][j] == -1) {
+                if (beginnerAnsGrid[i][j] ==  M) {
                     bBombs++;
                 }
             }
@@ -86,7 +89,7 @@ public class GridTest {
         int iBombs = 0;
         for (int i = 0; i < intermediateAnsGrid.length; i++) {
             for (int j = 0; j < intermediateAnsGrid.length; j++) {
-                if (intermediateAnsGrid[i][j] == -1) {
+                if (intermediateAnsGrid[i][j] == M) {
                     iBombs++;
                 }
             }
@@ -99,7 +102,7 @@ public class GridTest {
         int eBombs = 0;
         for (int i = 0; i < expertAnsGrid.length; i++) {
             for (int j = 0; j < expertAnsGrid.length; j++) {
-                if (expertAnsGrid[i][j] == -1) {
+                if (expertAnsGrid[i][j] == M) {
                     eBombs++;
                 }
             }
@@ -118,7 +121,7 @@ public class GridTest {
         int bombs = 0;
         for (int i = 0; i < answerGrid.length; i++) {
             for (int j = 0; j < answerGrid.length; j++) {
-                if (answerGrid[i][j] == -1) {
+                if (answerGrid[i][j] == M) {
                     bombs++;
                 }
             }
@@ -137,7 +140,7 @@ public class GridTest {
         int bombs = 0;
         for (int i = 0; i < answerGrid.length; i++) {
             for (int j = 0; j < answerGrid.length; j++) {
-                if (answerGrid[i][j] == -1) {
+                if (answerGrid[i][j] == M) {
                     bombs++;
                 }
             }
@@ -162,9 +165,9 @@ public class GridTest {
                                {0, 0, 0},
                                {0, 0, 1}};
         
-        assertEquals(0, beginner.countMinesOrFlags(0, 0, answerGrid, -1));
-        assertEquals(1, beginner.countMinesOrFlags(1, 1, answerGrid, -1));
-        assertEquals(0, beginner.countMinesOrFlags(2, 2, answerGrid, -1));
+        assertEquals(0, beginner.countMinesOrFlags(0, 0, answerGrid, M));
+        assertEquals(1, beginner.countMinesOrFlags(1, 1, answerGrid, M));
+        assertEquals(0, beginner.countMinesOrFlags(2, 2, answerGrid, M));
     }
 
     @Test
@@ -187,10 +190,10 @@ public class GridTest {
             for (int i = 0; i < answerGrid.length; i++) {
                 for (int j = 0; j < answerGrid.length; j++) {
                     int cellValue = answerGrid[i][j];
-                    if (cellValue == -1) { //MINE
+                    if (cellValue == M) { //MINE
                         continue;
                     }
-                    assertEquals(cellValue, beginner.countMinesOrFlags(i, j, answerGrid, -1));
+                    assertEquals(cellValue, beginner.countMinesOrFlags(i, j, answerGrid, M));
                 }
             }
         }
