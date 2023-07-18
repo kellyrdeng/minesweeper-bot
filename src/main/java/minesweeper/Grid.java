@@ -18,6 +18,7 @@ public class Grid {
     private int[][] answerGrid;
     private int[][] userGrid;
     private String difficulty;
+    private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags), game ends when mines == blanks
 
     public Grid(String difficulty) { //generates the answer and user grids cased on difficulty passed in
         this.difficulty = difficulty;
@@ -26,18 +27,22 @@ public class Grid {
         switch (difficulty) {
             case "beginner":
                 size = 9;
+                blanks = 81;
                 bombs = 10;
                 break;
             case "intermediate":
                 size = 16;
+                blanks = 256;
                 bombs = 40;
                 break;
             case "expert":
                 size = 24;
+                blanks = 576;
                 bombs = 99;
                 break;
             default:
                 size = 9;
+                blanks = 81;
                 bombs = 10;
         }
 
@@ -67,6 +72,19 @@ public class Grid {
     public int getSize() {
         return this.answerGrid.length;
     }
+
+    public int getBlanks() {
+        return this.blanks;
+    }
+
+    public void setBlanks(int blanks) {
+        this.blanks = blanks;
+    }
+
+    public void decrementBlanks() {
+        this.blanks = this.blanks - 1;
+    }
+
 
     public void setUserGridCell(int row, int column, int value) {
         this.userGrid[row][column] = value;

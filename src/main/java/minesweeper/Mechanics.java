@@ -11,36 +11,13 @@ import static minesweeper.Grid.OFFSET;
 
 public class Mechanics {
     private Grid grid;
-    private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags), game ends when mines == blanks
 
     public Mechanics(Grid grid) {
         this.grid = grid;
-        String difficulty = grid.getDifficulty();
-        switch (difficulty) {
-            case "beginner":
-                blanks = 81;
-                break;
-            case "intermediate":
-                blanks = 256;
-                break;
-            case "expert":
-                blanks = 576;
-                break;
-            default:
-                blanks = 81;
-        }
     }
 
     public Grid getGrid() {
         return this.grid;
-    }
-
-    public int getBlanks() {
-        return this.blanks;
-    }
-
-    public void setBlanks(int blanks) {
-        this.blanks = blanks;
     }
 
     //return 0 on success, -1 if mine hit, -2 if out of bounds
@@ -70,7 +47,7 @@ public class Mechanics {
                     chord(row, column, cellValue);
                 } else { 
                     grid.setUserGridCell(row, column, cellValue); //reveal minecount
-                    setBlanks(getBlanks() - 1); //decrement blanks
+                    grid.decrementBlanks();
                 }
                 return 0;
         }
@@ -160,7 +137,7 @@ public class Mechanics {
                 }
             }
         }
-        setBlanks(getBlanks() - visited.size()); //decrement all the cells we revealed
+        grid.setBlanks(grid.getBlanks() - visited.size()); //decrement all the cells we revealed
     }
 
     //reveals minecounts of cells adjacent to 0s revealed by BFS
