@@ -8,14 +8,18 @@ import java.util.HashSet;
 import org.junit.jupiter.api.Test;
 
 public class MechanicsTest {
+    public static final int M = -1;
+    public static final int F = -2;
+    public static final int B = -3;
+
     static int[][] answerGrid = {{ 1, 1, 0, 0},
-                                 {-1, 1, 0, 0},
+                                 { M, 1, 0, 0},
                                  { 2, 3, 2, 1},
-                                 { 1,-1,-1, 1}};
-    static int[][] answerGrid2 = {{-1, 1, 0, 0},
+                                 { 1, M, M, 1}};
+    static int[][] answerGrid2 = {{ M, 1, 0, 0},
                                   { 1, 1, 0, 0},
                                   { 0, 0, 1, 1},
-                                  { 0, 0, 1,-1}};
+                                  { 0, 0, 1, M}};
     static int[][] answerGrid3 = {{ 0, 0, 0, 0},
                                   { 0, 0, 0, 0},
                                   { 0, 0, 0, 0},
@@ -30,25 +34,25 @@ public class MechanicsTest {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid);
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(0, 0);
-        int[][] expectedGrid1 = {{ 1, -3, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid1 = {{ 1,  B,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
         int c2 = mech.click(2, 1);
-        int[][] expectedGrid2 = {{ 1, -3, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3,  3, -3, -3},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid2 = {{ 1,  B,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  3,  B,  B},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
     }
@@ -58,32 +62,32 @@ public class MechanicsTest {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid);
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(0, 3);
-        int[][] expectedGrid1 = {{-3,  1,  0,  0},
-                                 {-3,  1,  0,  0},
-                                 {-3,  3,  2,  1},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid1 = {{ B,  1,  0,  0},
+                                 { B,  1,  0,  0},
+                                 { B,  3,  2,  1},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
         //reset grid to test bfs from a different starting point
-        int[][] userGrid2 = {{-3, -3, -3, -3},
-                             {-3, -3, -3, -3},
-                             {-3, -3, -3, -3},
-                             {-3, -3, -3, -3}};
+        int[][] userGrid2 = {{ B,  B,  B,  B},
+                             { B,  B,  B,  B},
+                             { B,  B,  B,  B},
+                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid2);
 
         int c2 = mech.click(1, 2);
-        int[][] expectedGrid2 = {{-3,  1,  0,  0},
-                                 {-3,  1,  0,  0},
-                                 {-3,  3,  2,  1},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid2 = {{ B,  1,  0,  0},
+                                 { B,  1,  0,  0},
+                                 { B,  3,  2,  1},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
     }
@@ -93,17 +97,17 @@ public class MechanicsTest {
        Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid2);
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(0, 3);
-        int[][] expectedGrid1 = {{-3,  1,  0,  0},
+        int[][] expectedGrid1 = {{ B,  1,  0,  0},
                                  { 1,  1,  0,  0},
                                  { 0,  0,  1,  1},
-                                 { 0,  0,  1, -3}};
+                                 { 0,  0,  1,  B}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
@@ -112,39 +116,39 @@ public class MechanicsTest {
     public void testClickZeroTwoZonesBig() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] bigAnswerGrid = {{-1,  2,  1,  0,  0,  0},
-                                 { 2, -1,  2,  1,  0,  0},
-                                 { 1,  2, -1,  2,  1,  0},
-                                 { 0,  1,  2, -1,  2,  1},
-                                 { 0,  0,  1,  2, -1,  2},
-                                 { 0,  0,  0,  1,  2, -1}};
+        int[][] bigAnswerGrid = {{ M,  2,  1,  0,  0,  0},
+                                 { 2,  M,  2,  1,  0,  0},
+                                 { 1,  2,  M,  2,  1,  0},
+                                 { 0,  1,  2,  M,  2,  1},
+                                 { 0,  0,  1,  2,  M,  2},
+                                 { 0,  0,  0,  1,  2,  M}};
         grid.setAnswerGrid(bigAnswerGrid);
 
-        int[][] userGrid = {{-3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(0, 5);
-        int[][] expectedGrid1 = {{-3, -3,  1,  0,  0,  0},
-                                 {-3, -3,  2,  1,  0,  0},
-                                 {-3, -3, -3,  2,  1,  0},
-                                 {-3, -3, -3, -3,  2,  1},
-                                 {-3, -3, -3, -3, -3, -3},
-                                 {-3, -3, -3, -3, -3, -3}};
+        int[][] expectedGrid1 = {{ B,  B,  1,  0,  0,  0},
+                                 { B,  B,  2,  1,  0,  0},
+                                 { B,  B,  B,  2,  1,  0},
+                                 { B,  B,  B,  B,  2,  1},
+                                 { B,  B,  B,  B,  B,  B},
+                                 { B,  B,  B,  B,  B,  B}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
         int c2 = mech.click(5, 0);
-        int[][] expectedGrid2 = {{-3, -3,  1,  0,  0,  0},
-                                 {-3, -3,  2,  1,  0,  0},
-                                 { 1,  2, -3,  2,  1,  0},
-                                 { 0,  1,  2, -3,  2,  1},
-                                 { 0,  0,  1,  2, -3, -3},
-                                 { 0,  0,  0,  1, -3, -3}};
+        int[][] expectedGrid2 = {{ B,  B,  1,  0,  0,  0},
+                                 { B,  B,  2,  1,  0,  0},
+                                 { 1,  2,  B,  2,  1,  0},
+                                 { 0,  1,  2,  B,  2,  1},
+                                 { 0,  0,  1,  2,  B,  B},
+                                 { 0,  0,  0,  1,  B,  B}};
         assertEquals(0, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
     }
@@ -154,10 +158,10 @@ public class MechanicsTest {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid3);
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(0, 0);
@@ -174,10 +178,10 @@ public class MechanicsTest {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid4);
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(1, 1);
@@ -194,18 +198,18 @@ public class MechanicsTest {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid);
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(1, 0);
-        int[][] expectedGrid1 = {{-3, -3, -3, -3},
-                                 {-1, -3, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
-        assertEquals(-1, c1);
+        int[][] expectedGrid1 = {{ B,  B,  B,  B},
+                                 { M,  B,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B}};
+        assertEquals( M, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -213,20 +217,20 @@ public class MechanicsTest {
     public void testChording() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] chordAnswerGrid = {{-1, 1, 1,-1},
+        int[][] chordAnswerGrid = {{ M, 1, 1, M},
                                    { 1, 1, 1, 1},
                                    { 0, 0, 0, 0},
                                    { 0, 0, 0, 0}};
         grid.setAnswerGrid(chordAnswerGrid);
 
-        int[][] userGrid = {{-2,  1, -3, -3},
-                            { 1,  1, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ F,  1,  B,  B},
+                            { 1,  1,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(1, 1);
-        int[][] expectedGrid1 = {{-2, 1, 1,-3},
+        int[][] expectedGrid1 = {{ F, 1, 1, B},
                                  { 1, 1, 1, 1},
                                  { 0, 0, 0, 0},
                                  { 0, 0, 0, 0}};
@@ -238,39 +242,39 @@ public class MechanicsTest {
     public void testComplicatedChording() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] chordAnswerGrid = {{-1,  2, -1,  1},
+        int[][] chordAnswerGrid = {{ M,  2,  M,  1},
                                    { 1,  2,  1,  1},
                                    { 0,  0,  0,  0},
                                    { 0,  0,  0,  0}};
         grid.setAnswerGrid(chordAnswerGrid);
 
-        int[][] userGrid = {{-2,  2, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ F,  2,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(0, 1); //nothing should happen
-        int[][] expectedGrid1 = {{-2,  2, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid1 = {{ F,  2,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
         int c2 = mech.flag(0, 2); 
-        int[][] expectedGrid2 = {{-2,  2, -2, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid2 = {{ F,  2,  F,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
 
         int c3 = mech.click(0, 1); 
-        int[][] expectedGrid3 = {{-2,  2, -2, -3},
-                                 { 1,  2,  1, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid3 = {{ F,  2,  F,  B},
+                                 { 1,  2,  1,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c3);
         assertTrue(grid.sameGrids(expectedGrid3, userGrid));
     }
@@ -279,23 +283,23 @@ public class MechanicsTest {
     public void testUnsuccessfulChording() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] chordAnswerGrid = {{-1, 1, 1,-1},
+        int[][] chordAnswerGrid = {{ M, 1, 1, M},
                                    { 1, 1, 1, 1},
                                    { 0, 0, 0, 0},
                                    { 0, 0, 0, 0}};
         grid.setAnswerGrid(chordAnswerGrid);
 
-        int[][] userGrid = {{-3, -3, -3, -3},
-                            {-3,  1, -3, -3},
-                            {-3, -3, -3, -3},
-                            {-3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  1,  B,  B},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         int c1 = mech.click(1, 1);
-        int[][] expectedGrid1 = {{-3, -3, -3, -3},
-                                 {-3,  1, -3, -3},
-                                 {-3, -3, -3, -3},
-                                 {-3, -3, -3, -3}};
+        int[][] expectedGrid1 = {{ B,  B,  B,  B},
+                                 { B,  1,  B,  B},
+                                 { B,  B,  B,  B},
+                                 { B,  B,  B,  B}};
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
@@ -307,36 +311,36 @@ public class MechanicsTest {
         grid.setAnswerGrid(answerGrid);
         int c1 = mech.click(100, 100);
         int c2 = mech.click(1, 1);
-        int c3 = mech.click(-1, -1);
-        assertEquals(-2, c1);
+        int c3 = mech.click( M,  M);
+        assertEquals( F, c1);
         assertEquals(0, c2);
-        assertEquals(-2, c3);
+        assertEquals( F, c3);
     }
 
     @Test //regular click, just reveal the minecount of 1 cell
     public void testBlanks() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
-                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
-                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
-                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
-                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
-                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
-                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
-                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
-                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2,  M,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2,  M,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2,  M,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2,  M,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2,  M,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2,  M,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2,  M,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2,  M}};
         grid.setAnswerGrid(fullAnswerGrid);
 
-        int[][] userGrid = {{-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         mech.click(0, 2);
@@ -349,39 +353,39 @@ public class MechanicsTest {
     public void testBFSBlanks() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
-                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
-                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
-                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
-                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
-                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
-                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
-                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
-                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2,  M,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2,  M,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2,  M,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2,  M,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2,  M,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2,  M,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2,  M,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2,  M}};
         grid.setAnswerGrid(fullAnswerGrid);
 
-        int[][] userGrid = {{-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         mech.click(0, 8);
         assertEquals(47, grid.getBlanks());
-        int[][] expectedGrid = {{-3, -3,  1,  0,  0,  0,  0,  0,  0},
-                                {-3, -3,  2,  1,  0,  0,  0,  0,  0},
-                                {-3, -3, -3,  2,  1,  0,  0,  0,  0},
-                                {-3, -3, -3, -3,  2,  1,  0,  0,  0},
-                                {-3, -3, -3, -3, -3,  2,  1,  0,  0},
-                                {-3, -3, -3, -3, -3, -3,  2,  1,  0},
-                                {-3, -3, -3, -3, -3, -3, -3,  2,  1},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        int[][] expectedGrid = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
+                                { B,  B,  2,  1,  0,  0,  0,  0,  0},
+                                { B,  B,  B,  2,  1,  0,  0,  0,  0},
+                                { B,  B,  B,  B,  2,  1,  0,  0,  0},
+                                { B,  B,  B,  B,  B,  2,  1,  0,  0},
+                                { B,  B,  B,  B,  B,  B,  2,  1,  0},
+                                { B,  B,  B,  B,  B,  B,  B,  2,  1},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         assertTrue(grid.sameGrids(expectedGrid, userGrid));
     }
 
@@ -389,26 +393,26 @@ public class MechanicsTest {
     public void testFlaggingBlanks() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
-                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
-                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
-                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
-                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
-                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
-                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
-                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
-                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2,  M,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2,  M,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2,  M,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2,  M,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2,  M,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2,  M,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2,  M,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2,  M}};
         grid.setAnswerGrid(fullAnswerGrid);
 
-        int[][] userGrid = {{-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        int[][] userGrid = {{ B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
         mech.flag(0, 2);
@@ -421,40 +425,40 @@ public class MechanicsTest {
     public void testChordingBlanks() {
         Grid grid = new Grid("beginner");
         Mechanics mech = new Mechanics(grid);
-        int[][] fullAnswerGrid = {{-1,  2,  1,  0,  0,  0,  0,  0,  0},
-                                  { 2, -1,  2,  1,  0,  0,  0,  0,  0},
-                                  { 1,  2, -1,  2,  1,  0,  0,  0,  0},
-                                  { 0,  1,  2, -1,  2,  1,  0,  0,  0},
-                                  { 0,  0,  1,  2, -1,  2,  1,  0,  0},
-                                  { 0,  0,  0,  1,  2, -1,  2,  1,  0},
-                                  { 0,  0,  0,  0,  1,  2, -1,  2,  1},
-                                  { 0,  0,  0,  0,  0,  1,  2, -1,  2},
-                                  { 0,  0,  0,  0,  0,  0,  1,  2, -1}};
+        int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
+                                  { 2,  M,  2,  1,  0,  0,  0,  0,  0},
+                                  { 1,  2,  M,  2,  1,  0,  0,  0,  0},
+                                  { 0,  1,  2,  M,  2,  1,  0,  0,  0},
+                                  { 0,  0,  1,  2,  M,  2,  1,  0,  0},
+                                  { 0,  0,  0,  1,  2,  M,  2,  1,  0},
+                                  { 0,  0,  0,  0,  1,  2,  M,  2,  1},
+                                  { 0,  0,  0,  0,  0,  1,  2,  M,  2},
+                                  { 0,  0,  0,  0,  0,  0,  1,  2,  M}};
         grid.setAnswerGrid(fullAnswerGrid);
 
-        int[][] userGrid = {{-2,  2, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -2, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                            {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        int[][] userGrid = {{ F,  2,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  F,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                            { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
         grid.setBlanks(78);
 
         mech.click(0, 1);
         assertEquals(75, grid.getBlanks());
-        int[][] expectedGrid = {{-2,  2,  1, -3, -3, -3, -3, -3, -3},
-                                { 2, -2,  2, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3},
-                                {-3, -3, -3, -3, -3, -3, -3, -3, -3}};
+        int[][] expectedGrid = {{ F,  2,  1,  B,  B,  B,  B,  B,  B},
+                                { 2,  F,  2,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B},
+                                { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         assertTrue(grid.sameGrids(userGrid, expectedGrid));
     }
 }
