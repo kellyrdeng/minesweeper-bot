@@ -3,13 +3,10 @@
  */
 package minesweeper;
 
-import java.util.Scanner;
+import static minesweeper.Game.newGame;
 
 public class App {
     public static void main(String[] args) {
-        Scanner scnr = new Scanner(System.in);
-        System.out.println("Type beginner, intermediate, or expert to select difficulty:");
-        String difficulty = scnr.nextLine();
-        scnr.close();
+        newGame();
     }
 }

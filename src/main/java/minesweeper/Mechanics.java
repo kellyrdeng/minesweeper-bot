@@ -44,7 +44,7 @@ public class Mechanics {
 
             default: //1, 2, 3... minecount
                 if (grid.getUserGrid()[row][column] == cellValue) { //already been clicked/revealed
-                    return chord(row, column, cellValue);
+                    return chord(row, column);
                 } else { 
                     grid.setUserGridCell(row, column, cellValue); //reveal minecount
                     grid.decrementBlanks();
@@ -83,7 +83,8 @@ public class Mechanics {
     //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
 
     //return 0 on success, -1 if failed chord (incorrect flag) ends the game
-    public int chord(int i, int j, int minecount) {
+    public int chord(int i, int j) {
+        int minecount = grid.getAnswerGrid()[i][j];
         int[][] userGrid = grid.getUserGrid();
         int flags = grid.countMinesOrFlags(i, j, userGrid, FLAG);
 
