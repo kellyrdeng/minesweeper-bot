@@ -4,7 +4,43 @@ import java.util.Scanner;
 
 public class Game {
     
-    public static void newGame() {
+    public static void start() {
+        Grid grid = newGame();
+        Mechanics mech = new Mechanics(grid);
+
+        int blanks = grid.getBlanks();
+        int mines = grid.getMines();
+        int[][] userGrid = grid.getUserGrid();
+
+        //initialize variables used in the loop
+        int success = 0;
+        boolean firstClick = true;
+        Scanner scnr = new Scanner(System.in);
+
+        //game runs in this loop
+        while (blanks > mines && success != -1) {
+            grid.printGrid(userGrid);
+
+            System.out.println("Enter your next move in the format \"action row column\": (ex: click 2 4)");
+            System.out.println("Possible actions are click, flag, and chord.");
+
+            do {
+                String move = scnr.nextLine();
+                success = newMove(move, grid, mech);
+            } while (success == -2); //invalid input
+
+            /*if (firstClick) {
+                safeFirstClick(move, grid);
+            }*/
+
+            blanks = grid.getBlanks();
+        }
+        scnr.close();
+
+        printAnswerGridAndMessage(success, grid);
+    }
+
+    public static Grid newGame() {
         //initialize scanner and use to input desired difficulty
         Scanner scnr = new Scanner(System.in);
         System.out.println("Type beginner, intermediate, or expert to select difficulty:");
@@ -18,31 +54,7 @@ public class Game {
 
         //initialize grid and mechanics based on difficulty
         Grid grid = new Grid(difficulty);
-        Mechanics mech = new Mechanics(grid);
-        int blanks = grid.getBlanks();
-        int mines = grid.getMines();
-        int[][] userGrid = grid.getUserGrid();
-
-        int success = 0;
-        //game runs in this loop
-        while (blanks > mines && success != -1) {
-            System.out.print("\n");
-            grid.printGrid(userGrid);
-            System.out.print("\n");
-
-            System.out.println("Enter your next move in the format \"action row column\": (ex: click 2 4)");
-            System.out.println("Possible actions are click, flag, and chord.");
-
-            do {
-                String move = scnr.nextLine();
-                success = newMove(move, grid, mech);
-            } while (success == -2); //invalid input
-            blanks = grid.getBlanks();
-        }
-
-        printAnswerGridAndMessage(success, grid);
-
-        scnr.close();
+        return grid;
     }
 
     public static int newMove(String move, Grid grid, Mechanics mech) {  //"click 2 4"

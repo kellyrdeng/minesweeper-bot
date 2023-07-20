@@ -104,6 +104,7 @@ public class Grid {
 
     //prints out grid along with row/column indexes for easier cell identification
     public void printGrid(int[][] grid) {
+        System.out.print("\n");
         System.out.print("   ");
         for (int i = 0; i < grid.length; i++) {
             System.out.print(i + " ");
@@ -127,6 +128,7 @@ public class Grid {
             }
             System.out.print("\n");
         }
+        System.out.print("\n");
     }
 
     //determines if the contents of 2 grids are the same, used for testing
