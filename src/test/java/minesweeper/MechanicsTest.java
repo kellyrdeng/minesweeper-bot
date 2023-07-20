@@ -310,9 +310,9 @@ public class MechanicsTest {
         int c1 = mech.click(100, 100);
         int c2 = mech.click(1, 1);
         int c3 = mech.click( M,  M);
-        assertEquals( F, c1);
+        assertEquals(-2, c1);
         assertEquals(0, c2);
-        assertEquals( F, c3);
+        assertEquals(-2, c3);
     }
 
     @Test //regular click, just reveal the minecount of 1 cell
@@ -478,5 +478,55 @@ public class MechanicsTest {
 
         int c1 = mech.click(1, 1);
         assertEquals(-1, c1);
+    }
+
+    @Test
+    public void testTooManyFlagsStillWorks() {
+        Grid grid = new Grid("beginner");
+        Mechanics mech = new Mechanics(grid);
+        int[][] chordAnswerGrid = {{ 0, 0, 1, 1},
+                                   { 1, 1, 2, M},
+                                   { 1, M, 2, 1},
+                                   { 1, 1, 1, 0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{ B,  B,  B,  B},
+                            { B,  B,  B,  F},
+                            { B,  F,  B,  B},
+                            { B,  B,  B,  B}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = mech.flag(0, 2);
+        assertEquals(0, c1);
+        int[][] expectedGrid = {{ B,  B,  F,  B},
+                                { B,  B,  B,  F},
+                                { B,  F,  B,  B},
+                                { B,  B,  B,  B}};
+        assertTrue(grid.sameGrids(expectedGrid, userGrid));
+    }
+
+    @Test
+    public void testChordWithTooManyFlagsDoesNothing() {
+        Grid grid = new Grid("beginner");
+        Mechanics mech = new Mechanics(grid);
+        int[][] chordAnswerGrid = {{ 0, 0, 1, 1},
+                                   { 1, 1, 2, M},
+                                   { 1, M, 2, 1},
+                                   { 1, 1, 1, 0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{ B,  B,  F,  B},
+                            { B,  B,  2,  F},
+                            { B,  F,  B,  B},
+                            { B,  B,  B,  B}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = mech.chord(1, 2);
+        assertEquals(0, c1);
+        int[][] expectedGrid = {{ B,  B,  F,  B},
+                                { B,  B,  2,  F},
+                                { B,  F,  B,  B},
+                                { B,  B,  B,  B}};
+        assertTrue(grid.sameGrids(expectedGrid, userGrid));
     }
 }

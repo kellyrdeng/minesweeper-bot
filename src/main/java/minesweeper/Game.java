@@ -40,13 +40,8 @@ public class Game {
             blanks = grid.getBlanks();
         }
 
-        if (success == 0) {
-            System.out.println("All mines found, you won!");
-        } else {
-            grid.printGrid(userGrid);
-            System.out.print("\n");
-            System.out.println("Mine hit, you lost!");
-        }
+        printAnswerGridAndMessage(success, grid);
+
         scnr.close();
     }
 
@@ -66,6 +61,18 @@ public class Game {
             default:
                 //invalid input
                 return -2;
+        }
+    }
+
+    public static void printAnswerGridAndMessage(int success, Grid grid) {
+        if (success == 0) {
+            grid.printGrid(grid.getAnswerGrid());
+            System.out.print("\n");
+            System.out.println("All mines found, you won!");
+        } else {
+            grid.printGrid(grid.getUserGrid());
+            System.out.print("\n");
+            System.out.println("Mine hit, you lost!");
         }
     }
 

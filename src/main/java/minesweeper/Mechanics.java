@@ -69,11 +69,10 @@ public class Mechanics {
             
             case MINE: //same as blank
             
-            case BLANK:
-                grid.setUserGridCell(row, column, FLAG);
-                return 0;
+            case BLANK: //same as default
 
-            default: //minecount already revealed
+            default: //minecount, 0, 1, 2, 3...
+                grid.setUserGridCell(row, column, FLAG);
                 return 0;
         }
     }
