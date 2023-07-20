@@ -529,4 +529,29 @@ public class MechanicsTest {
                                 { B,  B,  B,  B}};
         assertTrue(grid.sameGrids(expectedGrid, userGrid));
     }
+
+    @Test
+    public void testCantChordABlankCell() {
+        Grid grid = new Grid("beginner");
+        Mechanics mech = new Mechanics(grid);
+        int[][] chordAnswerGrid = {{ 0, 0, 1, 1},
+                                   { 1, 1, 2, M},
+                                   { 1, M, 2, 1},
+                                   { 1, 1, 1, 0}};
+        grid.setAnswerGrid(chordAnswerGrid);
+
+        int[][] userGrid = {{ B,  B,  F,  B},
+                            { B,  B,  2,  F},
+                            { B,  F,  B,  B},
+                            { B,  B,  B,  B}};
+        grid.setUserGrid(userGrid);
+
+        int c1 = mech.chord(0, 0);
+        assertEquals(0, c1);
+        int[][] expectedGrid = {{ B,  B,  F,  B},
+                                { B,  B,  2,  F},
+                                { B,  F,  B,  B},
+                                { B,  B,  B,  B}};
+        assertTrue(grid.sameGrids(expectedGrid, userGrid));
+    }
 }

@@ -87,7 +87,7 @@ public class Mechanics {
         int[][] userGrid = grid.getUserGrid();
         int flags = grid.countMinesOrFlags(i, j, userGrid, FLAG);
 
-        if (flags != minecount) { //mines not all found so can't chord (do nothing)
+        if (flags != minecount || userGrid[i][j] == BLANK) { //mines not all found or cell not yet revealed, so can't chord (do nothing)
             return 0;
         }
 
