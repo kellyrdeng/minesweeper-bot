@@ -16,6 +16,10 @@ public class Mechanics {
         this.grid = grid;
     }
 
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
     public Grid getGrid() {
         return this.grid;
     }

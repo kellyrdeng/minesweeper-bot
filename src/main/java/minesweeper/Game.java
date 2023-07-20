@@ -8,30 +8,35 @@ public class Game {
         Grid grid = newGame();
         Mechanics mech = new Mechanics(grid);
 
+        //initialize variables used in the loop
         int blanks = grid.getBlanks();
         int mines = grid.getMines();
-        int[][] userGrid = grid.getUserGrid();
-
-        //initialize variables used in the loop
         int success = 0;
         boolean firstClick = true;
         Scanner scnr = new Scanner(System.in);
 
         //game runs in this loop
-        while (blanks > mines && success != -1) {
-            grid.printGrid(userGrid);
+        while (blanks > mines && success != -1) { //-1 is mine hit
+            grid.printGrid(grid.getUserGrid());
+            String move;
 
             System.out.println("Enter your next move in the format \"action row column\": (ex: click 2 4)");
             System.out.println("Possible actions are click, flag, and chord.");
 
             do {
-                String move = scnr.nextLine();
-                success = newMove(move, grid, mech);
+                move = scnr.nextLine();
+                String[] args = move.split(" ");
+                String action = args[0];
+                int row = Integer.valueOf(args[1]);
+                int column = Integer.valueOf(args[2]);
+
+                if (action.equals("click") && firstClick) {
+                    safeFirstClick(row, column, mech);
+                }
+
+                success = newMove(action, row, column, mech);
             } while (success == -2); //invalid input
 
-            /*if (firstClick) {
-                safeFirstClick(move, grid);
-            }*/
 
             blanks = grid.getBlanks();
         }
@@ -57,12 +62,7 @@ public class Game {
         return grid;
     }
 
-    public static int newMove(String move, Grid grid, Mechanics mech) {  //"click 2 4"
-        String[] args = move.split(" ");
-        String action = args[0];
-        int row = Integer.valueOf(args[1]);
-        int column = Integer.valueOf(args[2]);
-
+    public static int newMove(String action, int row, int column, Mechanics mech) {  //"click 2 4
         switch (action) {
             case "click":
                 return mech.click(row, column);
@@ -73,6 +73,16 @@ public class Game {
             default:
                 //invalid input
                 return -2;
+        }
+    }
+
+    public static void safeFirstClick(int row, int column, Mechanics mech) {
+        Grid grid = mech.getGrid();
+        String difficulty = grid.getDifficulty();
+
+        while (grid.getAnswerGrid()[row][column] == -1) { //while first click is unsafe, keep generating new grids until it is safe
+            Grid newGrid = new Grid(difficulty);
+            mech.setGrid(newGrid);
         }
     }
 
