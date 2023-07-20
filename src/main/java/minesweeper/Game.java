@@ -32,9 +32,9 @@ public class Game {
 
             System.out.println("Enter your next move in the format \"action row column\": (ex: click 2 4)");
             System.out.println("Possible actions are click, flag, and chord.");
-            String move = scnr.nextLine();
 
             do {
+                String move = scnr.nextLine();
                 success = newMove(move, grid, mech);
             } while (success == -2); //invalid input
             blanks = grid.getBlanks();
@@ -43,6 +43,8 @@ public class Game {
         if (success == 0) {
             System.out.println("All mines found, you won!");
         } else {
+            grid.printGrid(userGrid);
+            System.out.print("\n");
             System.out.println("Mine hit, you lost!");
         }
         scnr.close();
