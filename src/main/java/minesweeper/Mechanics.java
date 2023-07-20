@@ -60,7 +60,7 @@ public class Mechanics {
             return -2;
         }
 
-        int cellValue = grid.getAnswerGrid()[row][column];
+        int cellValue = grid.getUserGrid()[row][column];
 
         switch (cellValue) {
             case FLAG:
@@ -68,11 +68,12 @@ public class Mechanics {
                 return 0;
             
             case MINE: //same as blank
-            
-            case BLANK: //same as default
 
-            default: //minecount, 0, 1, 2, 3...
+            case BLANK:
                 grid.setUserGridCell(row, column, FLAG);
+                return 0;
+
+            default: //minecount already revealed, can't flag over a revealed cell
                 return 0;
         }
     }
