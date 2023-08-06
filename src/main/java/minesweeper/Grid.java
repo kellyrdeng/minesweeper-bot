@@ -107,10 +107,6 @@ public class Grid {
         this.userGrid = userGrid;
     }
 
-    public void setGrid(Grid grid) {
-        grid = grid;
-    }
-
     //  GENERATE GRIDS =============================================================================================
 
     //use random number generator to select random indexes to place bombs

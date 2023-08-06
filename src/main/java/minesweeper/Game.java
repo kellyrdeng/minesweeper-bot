@@ -30,11 +30,11 @@ public class Game {
                 int column = Integer.valueOf(args[2]);
 
                 if (action.equals("click") && firstClick) {
-                    safeFirstClick(row, column, mech);
+                    safeFirstClick(row, column, grid);
                     firstClick = false;
                 }
 
-                success = newMove(action, row, column, mech);
+                success = newMove(action, row, column, grid);
             } while (success == -2); //invalid input
 
 
@@ -57,9 +57,8 @@ public class Game {
             difficulty = scnr.nextLine();
         }
 
-        //initialize grid and mechanics based on difficulty
-        Grid grid = new Grid(difficulty);
-        return grid;
+        scnr.close();
+        return new Grid(difficulty);
     }
 
     public static int newMove(String action, int row, int column, Grid grid) {  //"click 2 4
@@ -81,7 +80,7 @@ public class Game {
 
         while (grid.getAnswerGrid()[row][column] == -1) { //while first click is unsafe, keep generating new grids until it is safe
             Grid newGrid = new Grid(difficulty);
-            grid.setGrid(newGrid);
+            grid.setAnswerGrid(newGrid.getAnswerGrid());
         }
     }
 

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class MechanicsTest {
+public class GridMechanicsTest {
     public static final int M = -1;  //MINE
     public static final int F = -2;  //FLAG
     public static final int B = -3;  //BLANK
@@ -30,7 +30,6 @@ public class MechanicsTest {
     @Test
     public void testClickNumber() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid);
         int[][] userGrid = {{ B,  B,  B,  B},
                             { B,  B,  B,  B},
@@ -38,7 +37,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(0, 0);
+        int c1 = grid.click(0, 0);
         int[][] expectedGrid1 = {{ 1,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B},
@@ -46,7 +45,7 @@ public class MechanicsTest {
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = mech.click(2, 1);
+        int c2 = grid.click(2, 1);
         int[][] expectedGrid2 = {{ 1,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  3,  B,  B},
@@ -58,7 +57,7 @@ public class MechanicsTest {
     @Test
     public void testClickZero() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
+        
         grid.setAnswerGrid(answerGrid);
         int[][] userGrid = {{ B,  B,  B,  B},
                             { B,  B,  B,  B},
@@ -66,7 +65,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(0, 3);
+        int c1 = grid.click(0, 3);
         int[][] expectedGrid1 = {{ B,  1,  0,  0},
                                  { B,  1,  0,  0},
                                  { B,  3,  2,  1},
@@ -81,7 +80,7 @@ public class MechanicsTest {
                              { B,  B,  B,  B}};
         grid.setUserGrid(userGrid2);
 
-        int c2 = mech.click(1, 2);
+        int c2 = grid.click(1, 2);
         int[][] expectedGrid2 = {{ B,  1,  0,  0},
                                  { B,  1,  0,  0},
                                  { B,  3,  2,  1},
@@ -93,7 +92,6 @@ public class MechanicsTest {
     @Test
     public void testClickZeroTwoZonesSmall() {
        Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid2);
         int[][] userGrid = {{ B,  B,  B,  B},
                             { B,  B,  B,  B},
@@ -101,7 +99,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(0, 3);
+        int c1 = grid.click(0, 3);
         int[][] expectedGrid1 = {{ B,  1,  0,  0},
                                  { 1,  1,  0,  0},
                                  { 0,  0,  1,  1},
@@ -113,7 +111,6 @@ public class MechanicsTest {
     @Test
     public void testClickZeroTwoZonesBig() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] bigAnswerGrid = {{ M,  2,  1,  0,  0,  0},
                                  { 2,  M,  2,  1,  0,  0},
                                  { 1,  2,  M,  2,  1,  0},
@@ -130,7 +127,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(0, 5);
+        int c1 = grid.click(0, 5);
         int[][] expectedGrid1 = {{ B,  B,  1,  0,  0,  0},
                                  { B,  B,  2,  1,  0,  0},
                                  { B,  B,  B,  2,  1,  0},
@@ -140,7 +137,7 @@ public class MechanicsTest {
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = mech.click(5, 0);
+        int c2 = grid.click(5, 0);
         int[][] expectedGrid2 = {{ B,  B,  1,  0,  0,  0},
                                  { B,  B,  2,  1,  0,  0},
                                  { 1,  2,  B,  2,  1,  0},
@@ -154,7 +151,6 @@ public class MechanicsTest {
     @Test //click a blank that reveals a zero, perform bfs
     public void testClickAllZeros() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid3);
         int[][] userGrid = {{ B,  B,  B,  B},
                             { B,  B,  B,  B},
@@ -162,7 +158,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(0, 0);
+        int c1 = grid.click(0, 0);
         int[][] expectedGrid1 = {{ 0,  0,  0,  0},
                                  { 0,  0,  0,  0},
                                  { 0,  0,  0,  0},
@@ -174,7 +170,6 @@ public class MechanicsTest {
     @Test
     public void testWeirdShapedBFS() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid4);
         int[][] userGrid = {{ B,  B,  B,  B},
                             { B,  B,  B,  B},
@@ -182,7 +177,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(1, 1);
+        int c1 = grid.click(1, 1);
         int[][] expectedGrid1 = {{ 0,  0,  1,  1},
                                  { 1,  0,  0,  1},
                                  { 1,  1,  0,  0},
@@ -194,7 +189,6 @@ public class MechanicsTest {
     @Test
     public void testClickBomb() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid);
         int[][] userGrid = {{ B,  B,  B,  B},
                             { B,  B,  B,  B},
@@ -202,7 +196,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(1, 0);
+        int c1 = grid.click(1, 0);
         int[][] expectedGrid1 = {{ B,  B,  B,  B},
                                  { M,  B,  B,  B},
                                  { B,  B,  B,  B},
@@ -214,7 +208,6 @@ public class MechanicsTest {
     @Test
     public void testChording() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] chordAnswerGrid = {{ M, 1, 1, M},
                                    { 1, 1, 1, 1},
                                    { 0, 0, 0, 0},
@@ -227,7 +220,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(1, 1);
+        int c1 = grid.click(1, 1);
         int[][] expectedGrid1 = {{ F, 1, 1, B},
                                  { 1, 1, 1, 1},
                                  { 0, 0, 0, 0},
@@ -239,7 +232,6 @@ public class MechanicsTest {
     @Test
     public void testComplicatedChording() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] chordAnswerGrid = {{ M,  2,  M,  1},
                                    { 1,  2,  1,  1},
                                    { 0,  0,  0,  0},
@@ -252,7 +244,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(0, 1); //nothing should happen
+        int c1 = grid.click(0, 1); //nothing should happen
         int[][] expectedGrid1 = {{ F,  2,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B},
@@ -260,7 +252,7 @@ public class MechanicsTest {
         assertEquals(0, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = mech.flag(0, 2); 
+        int c2 = grid.flag(0, 2); 
         int[][] expectedGrid2 = {{ F,  2,  F,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B},
@@ -268,7 +260,7 @@ public class MechanicsTest {
         assertEquals(0, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
 
-        int c3 = mech.click(0, 1); 
+        int c3 = grid.click(0, 1); 
         int[][] expectedGrid3 = {{ F,  2,  F,  B},
                                  { 1,  2,  1,  B},
                                  { B,  B,  B,  B},
@@ -280,7 +272,6 @@ public class MechanicsTest {
     @Test
     public void testUnsuccessfulChording() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] chordAnswerGrid = {{ M, 1, 1, M},
                                    { 1, 1, 1, 1},
                                    { 0, 0, 0, 0},
@@ -293,7 +284,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(1, 1);
+        int c1 = grid.click(1, 1);
         int[][] expectedGrid1 = {{ B,  B,  B,  B},
                                  { B,  1,  B,  B},
                                  { B,  B,  B,  B},
@@ -305,11 +296,10 @@ public class MechanicsTest {
     @Test
     public void testClickOutOfBounds() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         grid.setAnswerGrid(answerGrid);
-        int c1 = mech.click(100, 100);
-        int c2 = mech.click(1, 1);
-        int c3 = mech.click( M,  M);
+        int c1 = grid.click(100, 100);
+        int c2 = grid.click(1, 1);
+        int c3 = grid.click( M,  M);
         assertEquals(-2, c1);
         assertEquals(0, c2);
         assertEquals(-2, c3);
@@ -318,7 +308,6 @@ public class MechanicsTest {
     @Test //regular click, just reveal the minecount of 1 cell
     public void testBlanks() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2,  M,  2,  1,  0,  0,  0,  0,  0},
                                   { 1,  2,  M,  2,  1,  0,  0,  0,  0},
@@ -341,16 +330,15 @@ public class MechanicsTest {
                             { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        mech.click(0, 2);
+        grid.click(0, 2);
         assertEquals(80, grid.getBlanks());
-        mech.click(7, 6);
+        grid.click(7, 6);
         assertEquals(79, grid.getBlanks());
     }
 
     @Test //regular click, just reveal the minecount of 1 cell
     public void testBFSBlanks() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2,  M,  2,  1,  0,  0,  0,  0,  0},
                                   { 1,  2,  M,  2,  1,  0,  0,  0,  0},
@@ -373,7 +361,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        mech.click(0, 8);
+        grid.click(0, 8);
         assertEquals(47, grid.getBlanks());
         int[][] expectedGrid = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
                                 { B,  B,  2,  1,  0,  0,  0,  0,  0},
@@ -390,7 +378,6 @@ public class MechanicsTest {
     @Test //flagging doesn't affect number of blanks
     public void testFlaggingBlanks() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2,  M,  2,  1,  0,  0,  0,  0,  0},
                                   { 1,  2,  M,  2,  1,  0,  0,  0,  0},
@@ -413,16 +400,15 @@ public class MechanicsTest {
                             { B,  B,  B,  B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        mech.flag(0, 2);
+        grid.flag(0, 2);
         assertEquals(81, grid.getBlanks());
-        mech.flag(7, 6);
+        grid.flag(7, 6);
         assertEquals(81, grid.getBlanks());
     }
 
     @Test
     public void testChordingBlanks() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
         int[][] fullAnswerGrid = {{ M,  2,  1,  0,  0,  0,  0,  0,  0},
                                   { 2,  M,  2,  1,  0,  0,  0,  0,  0},
                                   { 1,  2,  M,  2,  1,  0,  0,  0,  0},
@@ -446,7 +432,7 @@ public class MechanicsTest {
         grid.setUserGrid(userGrid);
         grid.setBlanks(78);
 
-        mech.click(0, 1);
+        grid.click(0, 1);
         assertEquals(75, grid.getBlanks());
         int[][] expectedGrid = {{ F,  2,  1,  B,  B,  B,  B,  B,  B},
                                 { 2,  F,  2,  B,  B,  B,  B,  B,  B},
@@ -463,7 +449,7 @@ public class MechanicsTest {
     @Test
     public void testIncorrectFlagChord() { //chording with an incorrectly placed flag should end the game
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
+        
         int[][] chordAnswerGrid = {{ M, 1, 1, M},
                                    { 1, 1, 1, 1},
                                    { 0, 0, 0, 0},
@@ -476,14 +462,13 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.click(1, 1);
+        int c1 = grid.click(1, 1);
         assertEquals(-1, c1);
     }
-
     @Test
     public void testTooManyFlagsStillWorks() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
+        
         int[][] chordAnswerGrid = {{ 0, 0, 1, 1},
                                    { 1, 1, 2, M},
                                    { 1, M, 2, 1},
@@ -496,7 +481,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.flag(0, 2);
+        int c1 = grid.flag(0, 2);
         assertEquals(0, c1);
         int[][] expectedGrid = {{ B,  B,  F,  B},
                                 { B,  B,  B,  F},
@@ -508,7 +493,7 @@ public class MechanicsTest {
     @Test
     public void testChordWithTooManyFlagsDoesNothing() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
+        
         int[][] chordAnswerGrid = {{ 0, 0, 1, 1},
                                    { 1, 1, 2, M},
                                    { 1, M, 2, 1},
@@ -521,7 +506,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.chord(1, 2);
+        int c1 = grid.chord(1, 2);
         assertEquals(0, c1);
         int[][] expectedGrid = {{ B,  B,  F,  B},
                                 { B,  B,  2,  F},
@@ -533,7 +518,7 @@ public class MechanicsTest {
     @Test
     public void testCantChordABlankCell() {
         Grid grid = new Grid("beginner");
-        Mechanics mech = new Mechanics(grid);
+        
         int[][] chordAnswerGrid = {{ 0, 0, 1, 1},
                                    { 1, 1, 2, M},
                                    { 1, M, 2, 1},
@@ -546,7 +531,7 @@ public class MechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = mech.chord(0, 0);
+        int c1 = grid.chord(0, 0);
         assertEquals(0, c1);
         int[][] expectedGrid = {{ B,  B,  F,  B},
                                 { B,  B,  2,  F},
