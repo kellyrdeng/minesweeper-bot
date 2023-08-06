@@ -16,8 +16,8 @@ public class Game {
         boolean firstClick = true;
         Scanner scnr = new Scanner(System.in);
 
-        //game runs in this loop
-        while (blanks > mines && success != ClickSuccess.GAMEEND) { //-1 is mine hit
+        //game runs in this loop while not all mines found and a mine isn't hit
+        while (blanks > mines && success != ClickSuccess.GAMEEND) {
             grid.printGrid(grid.getUserGrid());
             String move;
 
@@ -38,7 +38,6 @@ public class Game {
 
                 success = newMove(action, row, column, grid);
             } while (success == ClickSuccess.UNSUCCESS); //invalid input
-
 
             blanks = grid.getBlanks();
         }
