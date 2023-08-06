@@ -1,7 +1,9 @@
 package minesweeper;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
@@ -14,13 +16,15 @@ public class Grid {
     public static final int BLANK = -3;
     public static final int[][] OFFSET = {{-1, -1}, {-1, 0}, {-1, 1},
                                           {0, -1},           {0,  1},
-                                          {1, -1},  {1, 0},  {1,  1}};
+                                          {1, -1},  {1,  0}, {1,  1}};
     private int[][] answerGrid;
     private int[][] userGrid;
     private String difficulty;
     private int blanks; //a blank cell is a cell who's minecount hasn't been revealed (includes flags), game ends when mines == blanks
     int size;
     int mines;
+
+    //  CONSTRUCTOR =============================================================================================
 
     public Grid(String difficulty) { //generates the answer and user grids cased on difficulty passed in
         this.difficulty = difficulty;
@@ -57,6 +61,8 @@ public class Grid {
         fillMinecount(answerGrid);
     }
 
+    //  GETTERS/SETTERS =============================================================================================
+
     public int[][] getAnswerGrid() {
         return this.answerGrid;
     }
@@ -89,7 +95,6 @@ public class Grid {
         this.blanks = this.blanks - 1;
     }
 
-
     public void setUserGridCell(int row, int column, int value) {
         this.userGrid[row][column] = value;
     }
@@ -101,6 +106,49 @@ public class Grid {
     public void setUserGrid(int[][] userGrid) {
         this.userGrid = userGrid;
     }
+
+    public void setGrid(Grid grid) {
+        grid = grid;
+    }
+
+    //  GENERATE GRIDS =============================================================================================
+
+    //use random number generator to select random indexes to place bombs
+    public void generateBombs(int[][] answerGrid, int bombs) throws RuntimeException {
+        int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
+        if (bombs > totalCells) {
+            throw new RuntimeException("Number of mines exceeds number of cells");
+        }
+
+        Random rand = new Random();
+        Set<Integer> seenBefore = new HashSet<>();
+
+        //randomly place bombs
+        while (seenBefore.size() < bombs) {
+            int i = rand.nextInt(totalCells);
+
+            if (!seenBefore.contains(i)) { //if i hasn't been seen before, add to hashset and continue
+                seenBefore.add(i);
+                int row = i / answerGrid.length;
+                int column = i % answerGrid.length;
+                answerGrid[row][column] = -1;
+            }
+        }
+    }
+
+    //use bomb placement to fill answer grid cells with the number of bombs they are adjacent to
+    public void fillMinecount(int[][] answerGrid) {
+        for (int i = 0; i < answerGrid.length; i ++) {
+            for (int j = 0; j < answerGrid.length; j++) {
+                if (answerGrid[i][j] == -1) {
+                    continue;
+                }
+                answerGrid[i][j] = countMinesOrFlags(i, j, answerGrid, -1);
+            }
+        }
+    }
+
+    //  HELPERS FOR GRID GENERATION =============================================================================================
 
     //prints out grid along with row/column indexes for easier cell identification
     public void printGrid(int[][] grid) {
@@ -153,41 +201,6 @@ public class Grid {
         return true;
     }
 
-    //use random number generator to select random indexes to place bombs
-    public void generateBombs(int[][] answerGrid, int bombs) throws RuntimeException {
-        int totalCells = (int)Math.pow(answerGrid.length, 2); //81 for b
-        if (bombs > totalCells) {
-            throw new RuntimeException("Number of mines exceeds number of cells");
-        }
-
-        Random rand = new Random();
-        Set<Integer> seenBefore = new HashSet<>();
-
-        //randomly place bombs
-        while (seenBefore.size() < bombs) {
-            int i = rand.nextInt(totalCells);
-
-            if (!seenBefore.contains(i)) { //if i hasn't been seen before, add to hashset and continue
-                seenBefore.add(i);
-                int row = i / answerGrid.length;
-                int column = i % answerGrid.length;
-                answerGrid[row][column] = -1;
-            }
-        }
-    }
-
-    //use bomb placement to fill answer grid cells with the number of bombs they are adjacent to
-    public void fillMinecount(int[][] answerGrid) {
-        for (int i = 0; i < answerGrid.length; i ++) {
-            for (int j = 0; j < answerGrid.length; j++) {
-                if (answerGrid[i][j] == -1) {
-                    continue;
-                }
-                answerGrid[i][j] = countMinesOrFlags(i, j, answerGrid, -1);
-            }
-        }
-    }
-
     //counts the number of immediate neighbors with mines OR flags (depending on the toCount var passed in)
     //for the point (i, j) using the offset const
     public int countMinesOrFlags(int i, int j, int[][] grid, int toCount) {
@@ -208,14 +221,132 @@ public class Grid {
         return minecount;
     }
 
-    public static void main(String[] args) {
-        Grid beginner = new Grid("beginner");
-        int[][] answerGrid =  {{0, 0, 0},
-                               {0, 0, 0},
-                               {0, 0, 1}};
-        System.out.println(beginner.countMinesOrFlags(5, 5, answerGrid, -1));
-        //not sure whats wrong here but every time i call countMinesOrFlags in main or in a test
-        //the inputs automatically become 0 and 0 no matter what parameters i give it
-        //it works fine when fillMinecount() calls it though
+    //  GAMEPLAY MECHANICS =============================================================================================
+
+    //return 0 on success, -1 if mine hit, -2 if out of bounds
+    public int click(int row, int column) {
+        //check if out of bounds
+        if (row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length) {
+            return -2;
+        }
+
+        int cellValue = getAnswerGrid()[row][column];
+
+        switch (cellValue) {
+            case MINE:
+                setUserGridCell(row, column, MINE);
+                return -1;
+
+            case 0:
+                zeroCellBFS(row, column, this);
+                return 0;
+
+            case FLAG:
+                setUserGridCell(row, column, BLANK);
+                return 0;
+
+            default: //1, 2, 3... minecount
+                if (getUserGrid()[row][column] == cellValue) { //already been clicked/revealed
+                    return chord(row, column);
+                } else { 
+                    setUserGridCell(row, column, cellValue); //reveal minecount
+                    decrementBlanks();
+                    return 0;
+                }
+        }
+    }
+
+    //0 on success, -2 if out of bounds
+    public int flag(int row, int column) {
+        //check if out of bounds
+        if (row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length) {
+            return -2;
+        }
+
+        int cellValue = getUserGrid()[row][column];
+
+        switch (cellValue) {
+            case FLAG:
+                setUserGridCell(row, column, BLANK);
+                return 0;
+            
+            case MINE: //same as blank
+
+            case BLANK:
+                setUserGridCell(row, column, FLAG);
+                return 0;
+
+            default: //minecount already revealed, can't flag over a revealed cell
+                return 0;
+        }
+    }
+
+    //when clicking a cell whose minecount has already been revealed, you can:
+    //a) reveal minecounts of neighboring cells if all neighboring mines have already been found
+    //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
+
+    //return 0 on success, -1 if failed chord (incorrect flag) ends the game
+    public int chord(int i, int j) {
+        int minecount = getAnswerGrid()[i][j];
+        int[][] userGrid = getUserGrid();
+        int flags = countMinesOrFlags(i, j, userGrid, FLAG);
+
+        if (flags != minecount || userGrid[i][j] == BLANK) { //mines not all found or cell not yet revealed, so can't chord (do nothing)
+            return 0;
+        }
+
+        //mines all found, click all other neighbor cells (it will reveal nonzeros, do bfs for 0s)
+        for (int[] neighbor : OFFSET) {
+            int row = i + neighbor[0];
+            int column = j + neighbor[1];
+
+            if (row < 0 || column < 0 || row >= userGrid.length || column >= userGrid.length) { //neighbor is out of boundaries
+                continue;
+            }
+
+            if (userGrid[row][column] == BLANK) {
+                int c = click(row, column);
+                if (c == -1) {
+                    return c;
+                }
+            }
+        }
+        return 0;
+    }
+
+    //if a 0 cell is clicked, it reveals adjacent 0s and then one more layer of cells adjacent to those 0s
+    public void zeroCellBFS(int i, int j, Grid grid) {
+        Queue<int[]> queue = new ArrayDeque<int[]>();
+        HashSet<Integer> visited = new HashSet<Integer>();
+        int[][] answerGrid = grid.getAnswerGrid();
+
+        queue.add(new int[]{i, j});
+        visited.add(i * grid.getSize() + j); //unique key to store in HashSet
+
+        while (queue.size() > 0) {
+            int[] popped = queue.poll();
+            int minecount = answerGrid[popped[0]][popped[1]];
+            grid.setUserGridCell(popped[0], popped[1], minecount); //reveal cell
+
+            if (minecount == 0) { //if 0, add neighbors if in bounds and not already visited
+                for (int[] point : OFFSET) {
+                    int row = popped[0] + point[0];
+                    int column = popped[1] + point[1];
+
+                    if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
+                        continue;
+                    }
+
+                    int[] neighbor = new int[]{row, column};
+                    int neighborInt = neighbor[0] * grid.getSize() + neighbor[1];
+
+                    if (!visited.contains(neighborInt)) { //add neighbor to queue if not yet visited
+                        queue.add(neighbor);
+                        visited.add(neighborInt);
+                    }
+                }
+            }
+        }
+        grid.setBlanks(grid.getBlanks() - visited.size()); //decrement all the cells we revealed
     }
 }

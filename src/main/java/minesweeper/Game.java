@@ -6,7 +6,6 @@ public class Game {
     
     public static void start() {
         Grid grid = newGame();
-        Mechanics mech = new Mechanics(grid);
 
         //initialize variables used in the loop
         int blanks = grid.getBlanks();
@@ -32,6 +31,7 @@ public class Game {
 
                 if (action.equals("click") && firstClick) {
                     safeFirstClick(row, column, mech);
+                    firstClick = false;
                 }
 
                 success = newMove(action, row, column, mech);
@@ -62,27 +62,26 @@ public class Game {
         return grid;
     }
 
-    public static int newMove(String action, int row, int column, Mechanics mech) {  //"click 2 4
+    public static int newMove(String action, int row, int column, Grid grid) {  //"click 2 4
         switch (action) {
             case "click":
-                return mech.click(row, column);
+                return grid.click(row, column);
             case "flag":
-                return mech.flag(row, column);
+                return grid.flag(row, column);
             case "chord":
-                return mech.chord(row, column);
+                return grid.chord(row, column);
             default:
                 //invalid input
                 return -2;
         }
     }
 
-    public static void safeFirstClick(int row, int column, Mechanics mech) {
-        Grid grid = mech.getGrid();
+    public static void safeFirstClick(int row, int column, Grid grid) {
         String difficulty = grid.getDifficulty();
 
         while (grid.getAnswerGrid()[row][column] == -1) { //while first click is unsafe, keep generating new grids until it is safe
             Grid newGrid = new Grid(difficulty);
-            mech.setGrid(newGrid);
+            grid.setGrid(newGrid);
         }
     }
 
