@@ -2,6 +2,8 @@ package minesweeper;
 
 import java.util.Scanner;
 
+import minesweeper.Grid.ClickSuccess;
+
 public class Game {
     
     public static void start() {
@@ -10,12 +12,12 @@ public class Game {
         //initialize variables used in the loop
         int blanks = grid.getBlanks();
         int mines = grid.getMines();
-        int success = 0;
+        ClickSuccess success = ClickSuccess.SUCCESS;
         boolean firstClick = true;
         Scanner scnr = new Scanner(System.in);
 
         //game runs in this loop
-        while (blanks > mines && success != -1) { //-1 is mine hit
+        while (blanks > mines && success != ClickSuccess.GAMEEND) { //-1 is mine hit
             grid.printGrid(grid.getUserGrid());
             String move;
 
@@ -35,7 +37,7 @@ public class Game {
                 }
 
                 success = newMove(action, row, column, grid);
-            } while (success == -2); //invalid input
+            } while (success == ClickSuccess.UNSUCCESS); //invalid input
 
 
             blanks = grid.getBlanks();
@@ -61,7 +63,7 @@ public class Game {
         return new Grid(difficulty);
     }
 
-    public static int newMove(String action, int row, int column, Grid grid) {  //"click 2 4
+    public static ClickSuccess newMove(String action, int row, int column, Grid grid) {  //"click 2 4
         switch (action) {
             case "click":
                 return grid.click(row, column);
@@ -70,8 +72,8 @@ public class Game {
             case "chord":
                 return grid.chord(row, column);
             default:
-                //invalid input
-                return -2;
+                //invalid input, out of bounds
+                return ClickSuccess.UNSUCCESS;
         }
     }
 
@@ -84,8 +86,8 @@ public class Game {
         }
     }
 
-    public static void printAnswerGridAndMessage(int success, Grid grid) {
-        if (success == 0) {
+    public static void printAnswerGridAndMessage(ClickSuccess success, Grid grid) {
+        if (success == ClickSuccess.SUCCESS) {
             grid.printGrid(grid.getAnswerGrid());
             System.out.print("\n");
             System.out.println("All mines found, you won!");

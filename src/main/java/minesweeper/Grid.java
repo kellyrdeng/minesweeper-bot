@@ -11,6 +11,13 @@ import java.util.Set;
 //it creates an answer grid with the mines and minecount for each cell
 //it also creates a blank user grid for the user to interact with and reveal cells from the answer board
 public class Grid {
+
+    public enum ClickSuccess {
+        SUCCESS, 
+        UNSUCCESS, //out of bounds
+        GAMEEND;
+    }
+
     public static final int MINE = -1;
     public static final int FLAG = -2;
     public static final int BLANK = -3;
@@ -219,11 +226,10 @@ public class Grid {
 
     //  GAMEPLAY MECHANICS =============================================================================================
 
-    //return 0 on success, -1 if mine hit, -2 if out of bounds
-    public int click(int row, int column) {
+    public ClickSuccess click(int row, int column) {
         //check if out of bounds
         if (row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length) {
-            return -2;
+            return ClickSuccess.UNSUCCESS;
         }
 
         int cellValue = getAnswerGrid()[row][column];
@@ -231,32 +237,32 @@ public class Grid {
         switch (cellValue) {
             case MINE:
                 setUserGridCell(row, column, MINE);
-                return -1;
+                return ClickSuccess.GAMEEND;
 
             case 0:
                 zeroCellBFS(row, column, this);
-                return 0;
+                return ClickSuccess.SUCCESS;
 
             case FLAG:
                 setUserGridCell(row, column, BLANK);
-                return 0;
+                return ClickSuccess.SUCCESS;
 
-            default: //1, 2, 3... minecount
+            default: //regular minecount
                 if (getUserGrid()[row][column] == cellValue) { //already been clicked/revealed
                     return chord(row, column);
                 } else { 
                     setUserGridCell(row, column, cellValue); //reveal minecount
                     decrementBlanks();
-                    return 0;
+                    return ClickSuccess.SUCCESS;
                 }
         }
     }
 
     //0 on success, -2 if out of bounds
-    public int flag(int row, int column) {
+    public ClickSuccess flag(int row, int column) {
         //check if out of bounds
         if (row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length) {
-            return -2;
+            return ClickSuccess.UNSUCCESS;
         }
 
         int cellValue = getUserGrid()[row][column];
@@ -264,16 +270,16 @@ public class Grid {
         switch (cellValue) {
             case FLAG:
                 setUserGridCell(row, column, BLANK);
-                return 0;
+                return ClickSuccess.SUCCESS;
             
             case MINE: //same as blank
 
             case BLANK:
                 setUserGridCell(row, column, FLAG);
-                return 0;
+                return ClickSuccess.SUCCESS;
 
             default: //minecount already revealed, can't flag over a revealed cell
-                return 0;
+                return ClickSuccess.SUCCESS;
         }
     }
 
@@ -281,14 +287,13 @@ public class Grid {
     //a) reveal minecounts of neighboring cells if all neighboring mines have already been found
     //b) do nothing (maybe flash cells in future implementation) if not all mines have been found yet
 
-    //return 0 on success, -1 if failed chord (incorrect flag) ends the game
-    public int chord(int i, int j) {
+    public ClickSuccess chord(int i, int j) {
         int minecount = getAnswerGrid()[i][j];
         int[][] userGrid = getUserGrid();
         int flags = countMinesOrFlags(i, j, userGrid, FLAG);
 
         if (flags != minecount || userGrid[i][j] == BLANK) { //mines not all found or cell not yet revealed, so can't chord (do nothing)
-            return 0;
+            return ClickSuccess.SUCCESS;
         }
 
         //mines all found, click all other neighbor cells (it will reveal nonzeros, do bfs for 0s)
@@ -301,13 +306,13 @@ public class Grid {
             }
 
             if (userGrid[row][column] == BLANK) {
-                int c = click(row, column);
-                if (c == -1) {
+                ClickSuccess c = click(row, column);
+                if (c == ClickSuccess.GAMEEND) {
                     return c;
                 }
             }
         }
-        return 0;
+        return ClickSuccess.SUCCESS;
     }
 
     //if a 0 cell is clicked, it reveals adjacent 0s and then one more layer of cells adjacent to those 0s

@@ -2,8 +2,8 @@ package minesweeper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
+import minesweeper.Grid.ClickSuccess;
 
 public class GridMechanicsTest {
     public static final int M = -1;  //MINE
@@ -37,20 +37,20 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(0, 0);
+        ClickSuccess c1 = grid.click(0, 0);
         int[][] expectedGrid1 = {{ 1,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = grid.click(2, 1);
+        ClickSuccess c2 = grid.click(2, 1);
         int[][] expectedGrid2 = {{ 1,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  3,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c2);
+        assertEquals(ClickSuccess.SUCCESS, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
     }
 
@@ -65,12 +65,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(0, 3);
+        ClickSuccess c1 = grid.click(0, 3);
         int[][] expectedGrid1 = {{ B,  1,  0,  0},
                                  { B,  1,  0,  0},
                                  { B,  3,  2,  1},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
         //reset grid to test bfs from a different starting point
@@ -80,12 +80,12 @@ public class GridMechanicsTest {
                              { B,  B,  B,  B}};
         grid.setUserGrid(userGrid2);
 
-        int c2 = grid.click(1, 2);
+        ClickSuccess c2 = grid.click(1, 2);
         int[][] expectedGrid2 = {{ B,  1,  0,  0},
                                  { B,  1,  0,  0},
                                  { B,  3,  2,  1},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c2);
+        assertEquals(ClickSuccess.SUCCESS, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
     }
 
@@ -99,12 +99,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(0, 3);
+        ClickSuccess c1 = grid.click(0, 3);
         int[][] expectedGrid1 = {{ B,  1,  0,  0},
                                  { 1,  1,  0,  0},
                                  { 0,  0,  1,  1},
                                  { 0,  0,  1,  B}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -127,24 +127,24 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(0, 5);
+        ClickSuccess c1 = grid.click(0, 5);
         int[][] expectedGrid1 = {{ B,  B,  1,  0,  0,  0},
                                  { B,  B,  2,  1,  0,  0},
                                  { B,  B,  B,  2,  1,  0},
                                  { B,  B,  B,  B,  2,  1},
                                  { B,  B,  B,  B,  B,  B},
                                  { B,  B,  B,  B,  B,  B}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = grid.click(5, 0);
+        ClickSuccess c2 = grid.click(5, 0);
         int[][] expectedGrid2 = {{ B,  B,  1,  0,  0,  0},
                                  { B,  B,  2,  1,  0,  0},
                                  { 1,  2,  B,  2,  1,  0},
                                  { 0,  1,  2,  B,  2,  1},
                                  { 0,  0,  1,  2,  B,  B},
                                  { 0,  0,  0,  1,  B,  B}};
-        assertEquals(0, c2);
+        assertEquals(ClickSuccess.SUCCESS, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
     }
 
@@ -158,12 +158,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(0, 0);
+        ClickSuccess c1 = grid.click(0, 0);
         int[][] expectedGrid1 = {{ 0,  0,  0,  0},
                                  { 0,  0,  0,  0},
                                  { 0,  0,  0,  0},
                                  { 0,  0,  0,  0}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -177,12 +177,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(1, 1);
+        ClickSuccess c1 = grid.click(1, 1);
         int[][] expectedGrid1 = {{ 0,  0,  1,  1},
                                  { 1,  0,  0,  1},
                                  { 1,  1,  0,  0},
                                  { 1,  0,  0,  1}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -196,12 +196,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(1, 0);
+        ClickSuccess c1 = grid.click(1, 0);
         int[][] expectedGrid1 = {{ B,  B,  B,  B},
                                  { M,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals( M, c1);
+        assertEquals(ClickSuccess.GAMEEND, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -220,12 +220,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(1, 1);
+        ClickSuccess c1 = grid.click(1, 1);
         int[][] expectedGrid1 = {{ F, 1, 1, B},
                                  { 1, 1, 1, 1},
                                  { 0, 0, 0, 0},
                                  { 0, 0, 0, 0}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -244,28 +244,28 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(0, 1); //nothing should happen
+        ClickSuccess c1 = grid.click(0, 1); //nothing should happen
         int[][] expectedGrid1 = {{ F,  2,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
 
-        int c2 = grid.flag(0, 2); 
+        ClickSuccess c2 = grid.flag(0, 2); 
         int[][] expectedGrid2 = {{ F,  2,  F,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c2);
+        assertEquals(ClickSuccess.SUCCESS, c2);
         assertTrue(grid.sameGrids(expectedGrid2, userGrid));
 
-        int c3 = grid.click(0, 1); 
+        ClickSuccess c3 = grid.click(0, 1); 
         int[][] expectedGrid3 = {{ F,  2,  F,  B},
                                  { 1,  2,  1,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c3);
+        assertEquals(ClickSuccess.SUCCESS, c3);
         assertTrue(grid.sameGrids(expectedGrid3, userGrid));
     }
 
@@ -284,12 +284,12 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(1, 1);
+        ClickSuccess c1 = grid.click(1, 1);
         int[][] expectedGrid1 = {{ B,  B,  B,  B},
                                  { B,  1,  B,  B},
                                  { B,  B,  B,  B},
                                  { B,  B,  B,  B}};
-        assertEquals(0, c1);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         assertTrue(grid.sameGrids(expectedGrid1, userGrid));
     }
 
@@ -297,12 +297,12 @@ public class GridMechanicsTest {
     public void testClickOutOfBounds() {
         Grid grid = new Grid("beginner");
         grid.setAnswerGrid(answerGrid);
-        int c1 = grid.click(100, 100);
-        int c2 = grid.click(1, 1);
-        int c3 = grid.click( M,  M);
-        assertEquals(-2, c1);
-        assertEquals(0, c2);
-        assertEquals(-2, c3);
+        ClickSuccess c1 = grid.click(100, 100);
+        ClickSuccess c2 = grid.click(1, 1);
+        ClickSuccess c3 = grid.click( M,  M);
+        assertEquals(ClickSuccess.UNSUCCESS, c1);
+        assertEquals(ClickSuccess.SUCCESS, c2);
+        assertEquals(ClickSuccess.UNSUCCESS, c3);
     }
 
     @Test //regular click, just reveal the minecount of 1 cell
@@ -462,8 +462,8 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.click(1, 1);
-        assertEquals(-1, c1);
+        ClickSuccess c1 = grid.click(1, 1);
+        assertEquals(ClickSuccess.GAMEEND, c1);
     }
     @Test
     public void testTooManyFlagsStillWorks() {
@@ -481,8 +481,8 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.flag(0, 2);
-        assertEquals(0, c1);
+        ClickSuccess c1 = grid.flag(0, 2);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         int[][] expectedGrid = {{ B,  B,  F,  B},
                                 { B,  B,  B,  F},
                                 { B,  F,  B,  B},
@@ -506,8 +506,8 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.chord(1, 2);
-        assertEquals(0, c1);
+        ClickSuccess c1 = grid.chord(1, 2);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         int[][] expectedGrid = {{ B,  B,  F,  B},
                                 { B,  B,  2,  F},
                                 { B,  F,  B,  B},
@@ -531,8 +531,8 @@ public class GridMechanicsTest {
                             { B,  B,  B,  B}};
         grid.setUserGrid(userGrid);
 
-        int c1 = grid.chord(0, 0);
-        assertEquals(0, c1);
+        ClickSuccess c1 = grid.chord(0, 0);
+        assertEquals(ClickSuccess.SUCCESS, c1);
         int[][] expectedGrid = {{ B,  B,  F,  B},
                                 { B,  B,  2,  F},
                                 { B,  F,  B,  B},
