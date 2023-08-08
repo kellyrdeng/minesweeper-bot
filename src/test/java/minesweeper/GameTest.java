@@ -256,6 +256,58 @@ public class GameTest {
                                   { 0,  0,  0,  1,  2,  2,  2,  F,  1},
                                   { 0,  0,  0,  0,  1,  F,  2,  1,  1}}; 
         assertTrue(grid.sameGrids(userGrid, expectedGrid17));
+
+        assertEquals(ClickSuccess.SUCCESS, grid.flag(5, 0));
+        assertEquals(15, grid.getBlanks());
+        int[][] expectedGrid18 = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
+                                  { B,  B,  3,  1,  1,  0,  0,  0,  0},
+                                  { B,  B,  3,  F,  1,  0,  1,  1,  1},
+                                  { B,  2,  2,  1,  2,  1,  2,  F,  1},
+                                  { B,  2,  0,  0,  1,  F,  2,  1,  1},
+                                  { F,  1,  0,  1,  2,  2,  1,  0,  0},
+                                  { 1,  1,  0,  1,  F,  1,  1,  1,  1},
+                                  { 0,  0,  0,  1,  2,  2,  2,  F,  1},
+                                  { 0,  0,  0,  0,  1,  F,  2,  1,  1}}; 
+        assertTrue(grid.sameGrids(userGrid, expectedGrid18));
+
+        assertEquals(ClickSuccess.SUCCESS, grid.chord(5, 1));
+        assertEquals(14, grid.getBlanks());
+        int[][] expectedGrid19 = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
+                                  { B,  B,  3,  1,  1,  0,  0,  0,  0},
+                                  { B,  B,  3,  F,  1,  0,  1,  1,  1},
+                                  { B,  2,  2,  1,  2,  1,  2,  F,  1},
+                                  { 2,  2,  0,  0,  1,  F,  2,  1,  1},
+                                  { F,  1,  0,  1,  2,  2,  1,  0,  0},
+                                  { 1,  1,  0,  1,  F,  1,  1,  1,  1},
+                                  { 0,  0,  0,  1,  2,  2,  2,  F,  1},
+                                  { 0,  0,  0,  0,  1,  F,  2,  1,  1}}; 
+        assertTrue(grid.sameGrids(userGrid, expectedGrid19));
+
+        assertEquals(ClickSuccess.SUCCESS, grid.flag(3, 0));
+        assertEquals(14, grid.getBlanks());
+        int[][] expectedGrid20 = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
+                                  { B,  B,  3,  1,  1,  0,  0,  0,  0},
+                                  { B,  B,  3,  F,  1,  0,  1,  1,  1},
+                                  { F,  2,  2,  1,  2,  1,  2,  F,  1},
+                                  { 2,  2,  0,  0,  1,  F,  2,  1,  1},
+                                  { F,  1,  0,  1,  2,  2,  1,  0,  0},
+                                  { 1,  1,  0,  1,  F,  1,  1,  1,  1},
+                                  { 0,  0,  0,  1,  2,  2,  2,  F,  1},
+                                  { 0,  0,  0,  0,  1,  F,  2,  1,  1}}; 
+        assertTrue(grid.sameGrids(userGrid, expectedGrid20));
+
+        assertEquals(ClickSuccess.SUCCESS, grid.flag(2, 1));
+        assertEquals(14, grid.getBlanks());
+        int[][] expectedGrid21 = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
+                                  { B,  B,  3,  1,  1,  0,  0,  0,  0},
+                                  { B,  F,  3,  F,  1,  0,  1,  1,  1},
+                                  { F,  2,  2,  1,  2,  1,  2,  F,  1},
+                                  { 2,  2,  0,  0,  1,  F,  2,  1,  1},
+                                  { F,  1,  0,  1,  2,  2,  1,  0,  0},
+                                  { 1,  1,  0,  1,  F,  1,  1,  1,  1},
+                                  { 0,  0,  0,  1,  2,  2,  2,  F,  1},
+                                  { 0,  0,  0,  0,  1,  F,  2,  1,  1}}; 
+        assertTrue(grid.sameGrids(userGrid, expectedGrid21));
     }
 
     @Test
