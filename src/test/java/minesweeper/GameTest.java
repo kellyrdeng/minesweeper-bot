@@ -157,7 +157,7 @@ public class GameTest {
         grid.setUserGrid(userGrid);
 
         grid.setBlanks(14);
-        assertEquals(ClickSuccess.SUCCESS, grid.click(1, 1));
+        assertEquals(ClickSuccess.SUCCESS, grid.chord(0, 2));
         int[][] expectedGrid1 = {{ 0,  0,  1,  F},
                                  { 0,  0,  1,  1},
                                  { 1,  1,  0,  0},

@@ -317,7 +317,7 @@ public class Grid {
     //if a 0 cell is clicked, it reveals adjacent 0s and then one more layer of cells adjacent to those 0s
     public void zeroCellBFS(int i, int j, Grid grid) {
         Queue<int[]> queue = new ArrayDeque<int[]>();
-        HashSet<Integer> visited = new HashSet<Integer>();
+        HashSet<Integer> visited = new HashSet<Integer>(); //stores row->col
         int[][] answerGrid = grid.getAnswerGrid();
 
         queue.add(new int[]{i, j});
@@ -326,9 +326,6 @@ public class Grid {
         while (queue.size() > 0) {
             int[] popped = queue.poll();
             int minecount = answerGrid[popped[0]][popped[1]];
-            if (userGrid[popped[0]][popped[1]] != BLANK) {
-                continue;
-            }
             grid.setUserGridCell(popped[0], popped[1], minecount); //reveal cell
 
             if (minecount == 0) { //if 0, add neighbors if in bounds and not already visited
@@ -343,7 +340,7 @@ public class Grid {
                     int[] neighbor = new int[]{row, column};
                     int neighborInt = neighbor[0] * grid.getSize() + neighbor[1];
 
-                    if (!visited.contains(neighborInt)) { //add neighbor to queue if not yet visited
+                    if (!visited.contains(neighborInt) && userGrid[row][column] == BLANK) { //add neighbor to queue if not yet visited or revealed
                         queue.add(neighbor);
                         visited.add(neighborInt);
                     }
