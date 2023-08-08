@@ -244,7 +244,6 @@ public class Grid {
                 return ClickSuccess.SUCCESS;
 
             case FLAG:
-                setUserGridCell(row, column, BLANK);
                 return ClickSuccess.SUCCESS;
 
             default: //regular minecount
@@ -327,6 +326,9 @@ public class Grid {
         while (queue.size() > 0) {
             int[] popped = queue.poll();
             int minecount = answerGrid[popped[0]][popped[1]];
+            if (userGrid[popped[0]][popped[1]] != BLANK) {
+                continue;
+            }
             grid.setUserGridCell(popped[0], popped[1], minecount); //reveal cell
 
             if (minecount == 0) { //if 0, add neighbors if in bounds and not already visited

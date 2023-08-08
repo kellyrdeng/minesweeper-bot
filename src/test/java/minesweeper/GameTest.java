@@ -126,5 +126,43 @@ public class GameTest {
                                  { 0,  0,  0,  1,  2,  B,  B,  B,  B},
                                  { 0,  0,  0,  0,  1,  B,  B,  B,  B}}; 
         assertTrue(grid.sameGrids(userGrid, expectedGrid7));
+
+        assertEquals(ClickSuccess.SUCCESS, grid.chord(4, 6));
+        assertEquals(23, grid.getBlanks());
+        int[][] expectedGrid8 = {{ B,  B,  1,  0,  0,  0,  0,  0,  0},
+                                 { B,  B,  3,  1,  1,  0,  0,  0,  0},
+                                 { B,  B,  3,  F,  1,  0,  1,  1,  1},
+                                 { B,  2,  2,  1,  2,  1,  2,  F,  B},
+                                 { B,  2,  0,  0,  1,  F,  2,  1,  1},
+                                 { B,  1,  0,  1,  2,  2,  1,  0,  0},
+                                 { 1,  1,  0,  1,  B,  B,  1,  1,  1},
+                                 { 0,  0,  0,  1,  2,  B,  B,  B,  B},
+                                 { 0,  0,  0,  0,  1,  B,  B,  B,  B}}; 
+        assertTrue(grid.sameGrids(userGrid, expectedGrid8));
+    }
+
+    @Test
+    public void testBFSWhenSomeAlreadyRevealed() {
+        Grid grid = new Grid("beginner");
+        int[][] answerGrid = {{ 0,  0,  1,  M},
+                              { 0,  0,  1,  1},
+                              { 1,  1,  0,  0},
+                              { M,  1,  0,  0}};
+        grid.setAnswerGrid(answerGrid);
+
+        int[][] userGrid = {{ B,  B,  1,  F},
+                            { B,  B,  B,  1},
+                            { B,  B,  B,  B},
+                            { B,  B,  B,  B}};
+        grid.setUserGrid(userGrid);
+
+        grid.setBlanks(14);
+        assertEquals(ClickSuccess.SUCCESS, grid.click(1, 1));
+        int[][] expectedGrid1 = {{ 0,  0,  1,  F},
+                                 { 0,  0,  1,  1},
+                                 { 1,  1,  0,  0},
+                                 { B,  1,  0,  0}};
+        assertTrue(grid.sameGrids(expectedGrid1, userGrid));
+        assertEquals(2, grid.getBlanks());
     }
 }
