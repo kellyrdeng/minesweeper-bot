@@ -165,9 +165,9 @@ public class GridTest {
                                {0, 0, 0},
                                {0, 0, 1}};
         
-        assertEquals(0, beginner.countMinesOrFlags(0, 0, answerGrid, M));
-        assertEquals(1, beginner.countMinesOrFlags(1, 1, answerGrid, M));
-        assertEquals(0, beginner.countMinesOrFlags(2, 2, answerGrid, M));
+        assertEquals(0, beginner.countTarget(0, 0, answerGrid, M));
+        assertEquals(1, beginner.countTarget(1, 1, answerGrid, M));
+        assertEquals(0, beginner.countTarget(2, 2, answerGrid, M));
     }
 
     @Test
@@ -193,7 +193,7 @@ public class GridTest {
                     if (cellValue == M) { //MINE
                         continue;
                     }
-                    assertEquals(cellValue, beginner.countMinesOrFlags(i, j, answerGrid, M));
+                    assertEquals(cellValue, beginner.countTarget(i, j, answerGrid, M));
                 }
             }
         }

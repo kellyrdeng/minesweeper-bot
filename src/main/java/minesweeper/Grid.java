@@ -146,12 +146,12 @@ public class Grid {
                 if (answerGrid[i][j] == -1) {
                     continue;
                 }
-                answerGrid[i][j] = countMinesOrFlags(i, j, answerGrid, -1);
+                answerGrid[i][j] = countTarget(i, j, answerGrid, -1);
             }
         }
     }
 
-    //  HELPERS FOR GRID GENERATION =============================================================================================
+    //  HELPERS  =============================================================================================
 
     //prints out grid along with row/column indexes for easier cell identification
     public void printGrid(int[][] grid) {
@@ -206,29 +206,32 @@ public class Grid {
 
     //counts the number of immediate neighbors with mines OR flags (depending on the toCount var passed in)
     //for the point (i, j) using the offset const
-    public int countMinesOrFlags(int i, int j, int[][] grid, int toCount) {
+    public int countTarget(int i, int j, int[][] grid, int target) {
         int minecount = 0;
 
         for (int[] point : OFFSET) {
             int row = i + point[0];
             int column = j + point[1];
 
-            if (row < 0 || column < 0 || row >= grid.length || column >= grid.length) { //neighbor is out of boundaries
+            if (outOfBounds(row, column)) { //neighbor is out of boundaries
                 continue;
             }
 
-            if (grid[row][column] == toCount) {
+            if (grid[row][column] == target) {
                 minecount++;
             }
         }
         return minecount;
     }
 
+    public boolean outOfBounds(int row, int column) {
+        return row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length;
+    }
+
     //  GAMEPLAY MECHANICS =============================================================================================
 
     public ClickSuccess click(int row, int column) {
-        //check if out of bounds
-        if (row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length) {
+        if (outOfBounds(row, column)) {
             return ClickSuccess.UNSUCCESS;
         }
 
@@ -260,7 +263,7 @@ public class Grid {
     //0 on success, -2 if out of bounds
     public ClickSuccess flag(int row, int column) {
         //check if out of bounds
-        if (row < 0 || column < 0 || row >= getAnswerGrid().length || column >= getAnswerGrid().length) {
+        if (outOfBounds(row, column)) {
             return ClickSuccess.UNSUCCESS;
         }
 
@@ -289,7 +292,7 @@ public class Grid {
     public ClickSuccess chord(int i, int j) {
         int minecount = getAnswerGrid()[i][j];
         int[][] userGrid = getUserGrid();
-        int flags = countMinesOrFlags(i, j, userGrid, FLAG);
+        int flags = countTarget(i, j, userGrid, FLAG);
 
         if (flags != minecount || userGrid[i][j] == BLANK) { //mines not all found or cell not yet revealed, so can't chord (do nothing)
             return ClickSuccess.SUCCESS;
@@ -300,7 +303,7 @@ public class Grid {
             int row = i + neighbor[0];
             int column = j + neighbor[1];
 
-            if (row < 0 || column < 0 || row >= userGrid.length || column >= userGrid.length) { //neighbor is out of boundaries
+            if (outOfBounds(row, column)) { //neighbor is out of boundaries
                 continue;
             }
 
@@ -328,12 +331,12 @@ public class Grid {
             int minecount = answerGrid[popped[0]][popped[1]];
             grid.setUserGridCell(popped[0], popped[1], minecount); //reveal cell
 
-            if (minecount == 0) { //if 0, add neighbors if in bounds and not already visited
+            if (minecount == 0) {
                 for (int[] point : OFFSET) {
                     int row = popped[0] + point[0];
                     int column = popped[1] + point[1];
 
-                    if (row < 0 || column < 0 || row >= answerGrid.length || column >= answerGrid.length) { //neighbor is out of boundaries
+                    if (outOfBounds(row, column)) {
                         continue;
                     }
 
